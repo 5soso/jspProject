@@ -47,8 +47,8 @@
 <body>
 <p><br/></p>
 <div class="container">
-  <h2>회원가입 연습(response.sendRedirect())</h2>
-  <form name="myform" method="post" action="<%=request.getContextPath()%>/j1026/test10Ok">
+  <h2>회원가입 연습(RequestDispatcher)</h2>
+  <form name="myform" method="post" action="<%=request.getContextPath()%>/j1026/test11Ok">
     <div class="cont">성명
   	  <input type="text" name="name" class="form-control mb-3" autofocus />
   	</div>

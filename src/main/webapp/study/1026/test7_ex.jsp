@@ -31,7 +31,7 @@
 <div class="container">
   <h2>콤보상자에서 그림파일을 선택하면 선택된 그림을 화면에 출력시켜주시오.</h2>
   <form name="myfrom">
-  	<label for="selectImg">강아지를 고르세요.</label>
+  	<label for="selectImg">이미지를 고르세요.</label>
   	<select name="selectImg" id="selectImg" onchange="selectCheck(this.value)">
   		<option value="">선택</option>
   		<option value="/images/1.jpg">만세하는 강아지</option> 
