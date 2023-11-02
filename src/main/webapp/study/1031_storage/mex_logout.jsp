@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!-- ex_logout.jsp -->
+<!-- mex_logout.jsp -->
 <%
 	String mid = (String) session.getAttribute("sMid");
 	pageContext.setAttribute("mid", mid);
@@ -10,5 +10,5 @@
 <script>
 	alert("${mid}님 로그아웃 되셨습니다.");
 	
-	location.href="ex_login_me.jsp";
+	location.href="mex_login.jsp";
 </script>

@@ -1,10 +1,11 @@
-<%@page import="java.net.CookieStore"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-  Cookie[] cookies = request.getCookies();
-	for(int i=0; i<cookies.length; i++){
+	// 로그인창에 아이디 체크 유무에 대한 처리
+	// 쿠키를 검색해서 cMid가 있을때 가져와서 아이디입력창에 뿌릴수 있게 한다.
+	Cookie[] cookies = request.getCookies();
+
+	for(int i=0; i<cookies.length; i++) {
 		if(cookies[i].getName().equals("cMid")) {
-			//System.out.println("gap : " + cookies[i].getValue());
 			pageContext.setAttribute("mid", cookies[i].getValue());
 			break;
 		}
@@ -14,39 +15,35 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name = "viewport" content ="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ex_login.jsp</title>
   <jsp:include page="/include/bs4.jsp" />
-  <style>
-  	span {
-  		color: red;
-  	}
-  </style>
 </head>
 <body>
 <p><br/></p>
 <div class="container">
-  <h2>로그인(cookie)</h2>
-  <hr/>
-  <form name="myform" method="post" action="ex_member2.jsp" >
-  <div style="text-align: right;">* 필수입력</div>
-  	<div> 
-  		<label for="mid">아이디 <span>*</span></label>
-  		<input type="text" name="mid" id="mid" value="${mid}" class="form-control mb-2" autofocus required />
-  		<input type="checkBox" name="midCheck" id="midCheck" checked class="mb-4" /> 아이디 저장하기
-  	</div>
-  	<div>
-  		<label for="mid">비밀번호 <span>*</span></label>
-  		<input type="password" name="pwd" id="pwd" value="1234" class="form-control mb-4" required />
-  	</div>
-  	<!-- <div>
-  		<label for="nickName">닉네임 <span>*</span></label>
-  		<input type="text" name="nickName" id="nickName" value="홍장군" class="form-control mb-2" required />
-  	</div> -->
-  	<div class="text-center">
-  		<input type="submit" value="로그인" class="btn btn-info" />
-  		<input type="reset" value="다시입력" class="btn btn-secondary" />
-  	</div>
+  <form name="myform" method="post" action="${pageContext.request.contextPath}/j1031/ex_LoginOk">
+    <table class="table table-bordered text-center">
+      <tr>
+        <td colspan="2"><font size="5">로 그 인</font></td>
+      </tr>
+      <tr>
+        <th>아이디</th>
+        <td><input type="text" name="mid" value="${mid}" autofocus required class="form-control"/></td>
+      </tr>
+      <tr>
+        <th>비밀번호</th>
+        <td><input type="password" name="pwd" value="1234" required class="form-control"/></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" value="로그인" class="btn btn-success mr-2"/>
+          <input type="reset" value="다시입력" class="btn btn-warning mr-2"/>
+          <input type="button" value="회원가입" onclick="alert('준비중입니다.');" class="btn btn-primary mr-4"/>
+	    		<input type="checkbox" name="idSave" checked /> 아이디 저장
+        </td>
+      </tr>
+    </table>
   </form>
 </div>
 <p><br/></p>

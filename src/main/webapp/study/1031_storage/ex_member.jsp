@@ -1,33 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!-- ex_member.jsp --> 
- <jsp:include page="/include/bs4.jsp" />
- <div class="container"> 
-	<h2>회원 쿠키(아이디) 저장</h2>
-	<hr/>
-	
-	<!-- 
-	1. 로그인창에 입력된 아이디와 비밀번호를 읽어야 한다. EL표기법을 사용하고 싶음. 
-	EL은 dispatcher전송방식일 때 사용가능하다. /  저장소에 변수를 담아서 가져오면 EL표기법을 사용하여 읽을 수 있다.
-	2. 체크박스에 체크가 되면 아이디 쿠키를 저장한다. / 체크하지 않으면 쿠키 값을 지운다?...
-	3. 아이디 쿠키 변수를 화면으로 다시 보낸다. 
-	-->
- <%
-/*  	if( 체크박스가 체크 되었다면 ) {
- 		String mid= request.getParameter("mid");
- 		Cookie cookieMid = new Cookie("cMid", mid);
- 		
- 		response.addCooke(cookieMid);
- 	}
- */
- 
- 
- 
- 
- 
- %>
-  
-  <form name="myform" method="post" action="ex_login.jsp" >
-  	<input type="button" value="로그아웃" class="btn btn-info"/> 
-  </form>
- </div> 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ex_member.jsp</title>
+  <jsp:include page="/include/bs4.jsp" />
+  <script>
+    'use strict';
+    
+    function searchCehck() {
+    	let str = '';
+    	str += '접속아이피 : <%=request.getRemoteAddr()%><br/>';
+    	str += '접속 URL : <%=request.getRequestURL()%><br/>';
+    	str += 'ContextPath명 : <%=request.getContextPath()%><br/>';
+    	str += '접속프로토콜 : <%=request.getProtocol()%><br/>';
+    	str += '접속방식 : <%=request.getMethod()%><br/>';
+    	str += '<hr/>';
+    	str += '<a href="javascript:location.reload();" class="btn btn-success">새로고침</a>';
+    	
+    	demo.innerHTML = str;
+    }
+  </script>
+</head>
+<body>
 <p><br/></p>
+<div class="container text-center">
+  <h2>회원 전용방</h2>
+  <br/>
+  <p>현재 ${sMid}님 로그인 중이십니다.</p>
+  <hr/>
+  <p><img src="${pageContext.request.contextPath}/images/2.jpg" width="300px"/></p>
+  <hr/>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col"><button type="button" onclick="searchCehck()" class="btn btn-primary">접속조회</button></div>
+    <div class="col"><a href="${pageContext.request.contextPath}/j1031/ex_Logout" class="btn btn-danger">로그아웃</a></div>
+    <div class="col"></div>
+  </div>
+  <hr/>
+  <div id="demo"></div>
+</div>
+<p><br/></p>
+</body>
+</html>

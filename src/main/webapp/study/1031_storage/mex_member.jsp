@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name = "viewport" content ="width=device-width, initial-scale=1">
-  <title>ex_member2</title>
+  <title>mex_member</title>
   
 <!-- 쿠키 저장하기 --> 
 <% 
@@ -16,7 +16,7 @@
 		//로그인 정보 틀렸을 때
 		out.println("<script>");
 		out.println("alert('회원 정보를 확인하세요');");
-		out.println("location.href='ex_login.jsp';");
+		out.println("location.href='mex_login.jsp';");
 		out.println("</script>");
 		return;
 	}
@@ -46,7 +46,7 @@
   		let ans=confirm("로그아웃 하시겠습니까?"); 
 
   		if(ans) {
-  			location.href="${pageContext.request.contextPath}/study/1031_storage/ex_logout.jsp";
+  			location.href="${pageContext.request.contextPath}/study/1031_storage/mex_logout.jsp";
   		}
   	}
   </script>
