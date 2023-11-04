@@ -18,7 +18,7 @@
  		<tr>
 	  	<td>관리자</td>
 	  	<td class="text-right"><a href="${ctp}/guest/guestInput.jsp" class="btn btn-success">글쓰기</a></td>
-	  	</tr>
+	  </tr>
   </table>
   <c:forEach var="vo" items="${vos}" varStatus="st">
 	  <table class="table table-borderless">

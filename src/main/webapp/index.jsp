@@ -9,10 +9,10 @@
   <title>JavaProject(index.jsp)</title>
   <jsp:include page="/include/bs4.jsp" />
   <style>
-  .fakeimg {
-    height: 200px;
-    background: #aaa;
-  }
+  	.fakeimg {
+    	height: 200px;
+    	background: #aaa;
+  	}
   </style>
 </head>
 <body>
