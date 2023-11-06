@@ -13,33 +13,34 @@
 <jsp:include page="/include/header.jsp" />
 <p><br/></p>
 <div class="container">
-	<h2 class="text-center">방 명 록 작 성 하 기</h2>
-	<form name="myform" method="post" action="${ctp}/guest/GuestInputOk" class="was-validated">
-		<div class="form-group">
-  		<label for="name">성명</label>
-  		<input type="text" name="name" id="name" class="form-control" placeholder="이름을 입력하세요." required>
-  		<div class="valid-feedback">Check</div>
-    	<div class="invalid-feedback">필수입력 사항입니다.</div>
+  <h2 class="text-center">방명록 글올리기</h2>
+  <form name="myform" method="post" action="${ctp}/GuestInputOk" class="was-validated">
+    <div class="form-group">
+      <label for="name">성명</label>
+      <input type="text" class="form-control" id="name" value="${sMid}" placeholder="Enter username" name="name" required />
+      <div class="valid-feedback">Ok!!!</div>
+      <div class="invalid-feedback">성명을 입력해 주세요.</div>
     </div>
     <div class="form-group">
-  		<label for="email">Email</label>
-  		<input type="text" name="email" id="email" class="form-control" placeholder="user1234@green.com">
+      <label for="name">E-mail</label>
+      <input type="text" class="form-control" id="email" placeholder="Enter email" name="email" />
     </div>
     <div class="form-group">
-  		<label for="homePage">homepage</label>
-  		<input type="text" name="homePage" id="homePage" class="form-control" placeholder="홈페이지 주소를 입력하세요."/>
-  		<br/>
-    	<label for="content">방문소감</label>
-  		<textarea rows="10" name="content" id="content" class="form-control" required></textarea>
-  		<div class="valid-feedback">Check</div>
-    	<div class="invalid-feedback">필수입력 사항입니다.</div>
+      <label for="name">Homepage</label>
+      <input type="text" class="form-control" id="homePage" placeholder="Enter Homepage" name="homePage" value="https://" />
     </div>
-    <div class="form-group text-right">
-    	<input type="submit" value="등록하기" class="btn btn-success" /> &nbsp;
-    	<input type="reset" value="다시입력" class="btn btn-secondary" /> &nbsp;
-    	<input type="button" value="돌아가기" onclick="location.href='${ctp}/GuestList';" class="btn btn-info" /> 
+    <div class="form-group">
+      <label for="pwd">방문소감</label>
+      <textarea rows="5" name="content" id="content" required class="form-control"></textarea>
+      <div class="valid-feedback">Ok!!!</div>
+      <div class="invalid-feedback">방문소감을 입력해 주세요.</div>
     </div>
-    <input type="hidden" name="hostIp" value=" <%=request.getRemoteAddr()%>" />
+    <div class="form-group text-center">
+    	<button type="submit" class="btn btn-primary mr-3">방명록 등록</button>
+    	<button type="reset" class="btn btn-warning mr-3">방명록 다시입력</button>
+    	<button type="button" onclick="location.href='${ctp}/GuestList';" class="btn btn-danger">돌아가기</button>
+    </div>
+    <input type="hidden" name="hostIp" value="<%=request.getRemoteAddr()%>"/>
   </form>
 </div>
 <p><br/></p>

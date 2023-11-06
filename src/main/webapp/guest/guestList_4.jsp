@@ -22,11 +22,6 @@
     	let pageSize = document.getElementById("pageSize").value;
     	location.href = '${ctp}/GuestList?pag=${pag}&pageSize='+pageSize;
     }
-    
-    function nameSearch() {
-    	let name = document.getElementById("searchName").value;
-    	location.href="${ctp}/GuestListName?name="+name;
-    }
   </script>
   <style>
     th {
@@ -43,10 +38,8 @@
   <table class="table table-borderless">
     <tr>
       <td>
-        <c:if test="${sAdmin != 'adminOk'}"><a href="${ctp}/guest/adminLogin.jsp" class="btn btn-secondary">관리자</a></c:if>
+        <c:if test="${sAdmin != 'adminOk'}"><a href="${ctp}/guest/adminLogin.jsp" class="btn btn-primary">관리자</a></c:if>
         <c:if test="${sAdmin == 'adminOk'}"><a href="${ctp}/guest/adminLogout" class="btn btn-primary">관리자 로그아웃</a></c:if>
-        <input type="text" name="searchName" id="searchName" value="방명록 매크로"/> 
-        <input type="button" value="이름검색" onclick="nameSearch()"/>
       </td>
       <td class="text-right"><a href="${ctp}/guest/guestInput.jsp" class="btn btn-success">글쓰기</a></td>
     </tr>
@@ -119,15 +112,15 @@
   
 <!-- 블록페이지 시작(1블록의 크기를 3개(3Page)로 한다. -->
 <div class="text-center">
-  <ul class="pagination justify-content-center">
-	  <c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>  
-  	<c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageSize}">이전블록</a></li></c:if>
+  <ul class="pagination">  
+  	<c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link" href="${ctp}/GuestList?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageSize}">이전블록</a></li></c:if>
   	<c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize)+blockSize}" varStatus="st">
-  	  <c:if test="${i <= totPage && i == pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
-  	  <c:if test="${i <= totPage && i != pag}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+  	  <%-- <c:if test="${i <= totPage}"> --%>
+  	    <c:if test="${i <= totPage && i == pag}"><li class="page-item active"><a class="page-link" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+  	    <c:if test="${i <= totPage && i != pag}"><li class="page-item"><a class="page-link" href="${ctp}/GuestList?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+  	  <%-- </c:if> --%>
   	</c:forEach>
-  	<c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
-	  <c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList?pag=${totPage}&pageSize=${pageSize}">마지막페이지</a></li></c:if>  
+  	<c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link" href="${ctp}/GuestList?pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
   </ul>
 </div>
 <!-- 블록페이지 끝 -->
