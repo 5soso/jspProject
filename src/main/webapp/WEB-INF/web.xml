@@ -58,10 +58,11 @@
    </context-param>
    
    <!-- dbcp 설정 선언 -->
-   <resource-ref>
+   <!-- <resource-ref>
    		<description>connection</description>
    		<res-ref-name>dbcp_mysql</res-ref-name>
    		<res-type>javax.sql.DataSource</res-type>
    		<res-order>Container</res-order>
-   </resource-ref>
+   </resource-ref> -->
+   
 </web-app>
