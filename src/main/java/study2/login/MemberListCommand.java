@@ -13,10 +13,9 @@ public class MemberListCommand implements LoginInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LoginDAO dao = new LoginDAO();
 		
-	 	ArrayList<LoginVO> vos = new ArrayList<>();
-	 			
-	 	vos = dao.getLoginList();
-	 	
-	 	request.setAttribute("vos", vos);
+		ArrayList<LoginVO> vos = dao.getLoginList();
+		
+		request.setAttribute("vos", vos);
 	}
+
 }

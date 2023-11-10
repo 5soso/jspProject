@@ -177,32 +177,36 @@ public class LoginDAO {
 	}
 
 	// 회원 삭제처리
-	public void setDeleteOk(String mid) {
+	public int setDeleteOk(String mid) {
+		int res = 0;
 		try {
 			sql = "delete from login where mid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
-			pstmt.executeUpdate();
+			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("sql구문 오류 : " + e.getMessage());
 		} finally {
 			pstmtClose();
 		}
+		return res;
 	}
 
 	// 회원 정보 수정하기
-	public void setUpdateOk(LoginVO vo) {
+	public int setUpdateOk(LoginVO vo) {
+		int res = 0;
 		try {
 			sql = "update login set name=? where mid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getMid());
-			pstmt.executeUpdate();
+			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("sql구문 오류 : " + e.getMessage());
 		} finally {
 			pstmtClose();
 		}
+		return res;
 	}
 	
 }

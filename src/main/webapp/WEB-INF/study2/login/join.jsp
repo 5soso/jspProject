@@ -20,10 +20,9 @@
   </style>
 </head>
 <body>
-<jsp:include page="/include/header.jsp" />
 <p><br/></p>
 <div class="container text-center">
-<form name="myform" method="post" action="${ctp}/database/joinOk.lo">
+<form name="myform" method="post" action="joinOk.lo">
   <h2>회 원 가 입</h2>
   <table class="table table-bordered">
     <tr>
@@ -49,6 +48,5 @@
 </form>
 </div>
 <p><br/></p>
-<jsp:include page="/include/footer.jsp" />
 </body>
 </html>

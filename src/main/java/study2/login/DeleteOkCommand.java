@@ -15,11 +15,18 @@ public class DeleteOkCommand implements LoginInterface {
 		String mid = (String) session.getAttribute("sMid");
 		
 		LoginDAO dao = new LoginDAO();
-		dao.setDeleteOk(mid);
 		
-		session.invalidate();
+		int res = dao.setDeleteOk(mid);
 		
-		request.setAttribute("msg", mid+"님 탈퇴되었습니다.");
-		request.setAttribute("url", request.getContextPath()+"/login.lo");
+		if(res != 0) {
+			session.invalidate();
+			request.setAttribute("msg", mid + "님 회원 탈퇴 되셨습니다.");
+			request.setAttribute("url", "login.lo");
+		}
+		else {
+			request.setAttribute("msg", "회원 탈퇴 실패~~");
+			request.setAttribute("url", "memberMain.lo");
+		}
 	}
+
 }

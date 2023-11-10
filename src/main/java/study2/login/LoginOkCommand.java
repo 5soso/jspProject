@@ -20,9 +20,14 @@ public class LoginOkCommand implements LoginInterface {
 		LoginDAO dao = new LoginDAO();
 		
 		LoginVO vo = dao.getLoginCheck(mid, pwd);
-
+		
 		if(vo.getName() != null) {
-			// 로그인 성공시 처리해야 할 내용들을 모두 기술한다.
+			// 회원 인증 성공....
+			// 1.자주사용하는 변수(객체) 세션에 저장(아이디,성명, 닉네임), 2.쿠키에 아이디 저장또는 제거,
+			// 3.DB에 처리할 내용들(최종방문일, 포인터누적, 오늘 방문일수 누적...)
+			
+			// 방문포인트 처리하기?(최종접속일/방문카운트도 함께 업데이트 처리)
+			// 하루의 방문포인트는 매번 10포인트씩 주기로 한다. 단, 최대 50포이터까지만 인정한다.
 			
 			// 날짜 비교
 			Date today = new Date();
@@ -35,7 +40,7 @@ public class LoginOkCommand implements LoginInterface {
 				if(vo.getTodayCount() <= 5) vo.setPoint(vo.getPoint()+10);
 			}
 			else {
-				// 오늘 처음 방문한 경우
+				// 오늘 처음 방문한 경우가
 				vo.setTodayCount(1);
 				vo.setPoint(vo.getPoint()+10);
 			}
@@ -43,7 +48,7 @@ public class LoginOkCommand implements LoginInterface {
 			// 3.DB작업(변경된 내용들을 DB에 저장(갱신))
 			dao.setLoginUpdate(vo);
 			
-			// 세션처리
+			// 1.세션처리
 			HttpSession session = request.getSession();
 			session.setAttribute("sMid", mid);
 			session.setAttribute("sName", vo.getName());
@@ -51,7 +56,7 @@ public class LoginOkCommand implements LoginInterface {
 			session.setAttribute("sLastDate", vo.getLastDate());
 			session.setAttribute("sTodayCount", vo.getTodayCount());
 			
-			// 쿠키저장
+			// 2.쿠키저장
 			String idSave = request.getParameter("idSave")==null ? "off" : "on";
 			Cookie cookieMid = new Cookie("cMid", mid);
 			cookieMid.setPath("/");
@@ -65,11 +70,11 @@ public class LoginOkCommand implements LoginInterface {
 			
 			// 메세지 처리
 			request.setAttribute("msg", vo.getName()+"님 로그인 되었습니다.");
-			request.setAttribute("url", request.getContextPath()+"/memberMain.lo");
+			request.setAttribute("url", "memberMain.lo");
 		}
 		else {
 			request.setAttribute("msg", "로그인 실패~~~");
-			request.setAttribute("url", request.getContextPath()+"/login.lo");
+			request.setAttribute("url", "login.lo");
 		}
 	}
 

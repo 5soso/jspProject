@@ -36,18 +36,26 @@ public class LoginController extends HttpServlet {
 			command.execute(request, response);			
 			viewPage = "/include/message.jsp";
 		}
+		else if(com.equals("/join")) {
+			viewPage += "/join.jsp";
+		}
 		else if(com.equals("/joinOk")) {
 			command = new JoinOkCommand();
 			command.execute(request, response);			
 			viewPage = "/include/message.jsp";
 		}
 		else if(com.equals("/memberMain")) {
-			//command = new MemberMainCommand();
-			//command.execute(request, response);			
+//			command = new MemberMainCommand();
+//			command.execute(request, response);			
 			viewPage += "/memberMain.jsp";
 		}
-		else if(com.equals("/MemberSearch")) {
+		else if(com.equals("/memberSearch")) {
 			command = new MemberSearchCommand();
+			command.execute(request, response);			
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/memberMidSearch")) {
+			command = new MemberMidSearchCommand();
 			command.execute(request, response);			
 			viewPage += "/memberSearch.jsp";
 		}
@@ -57,8 +65,8 @@ public class LoginController extends HttpServlet {
 			viewPage += "/memberList.jsp";
 		}
 		else if(com.equals("/update")) {
-//			command = new UpdateCommand();
-//			command.execute(request, response);			
+			command = new UpdateCommand();
+			command.execute(request, response);			
 			viewPage += "/update.jsp";
 		}
 		else if(com.equals("/updateOk")) {
@@ -72,8 +80,6 @@ public class LoginController extends HttpServlet {
 			viewPage = "/include/message.jsp";
 		}
 		
-//		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
-//		dispatcher.forward(request, response);
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

@@ -1,11 +1,15 @@
 package study2.login;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import study.database.LoginDAO;
+import study.database.LoginVO;
 
 public class UpdateOkCommand implements LoginInterface {
 
@@ -14,32 +18,36 @@ public class UpdateOkCommand implements LoginInterface {
 		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
 		String pwd = request.getParameter("pwd")==null ? "" : request.getParameter("pwd");
 		String name = request.getParameter("name")==null ? "" : request.getParameter("name");
-
+		
 		LoginDAO dao = new LoginDAO();
 		
-		//비밀번호 체크
+		// 비밀번호 체크하기..
 		LoginVO vo = dao.getLoginCheck(mid, pwd);
 		
-		if(vo.getMid()== null) {
-			request.setAttribute("msg", "비밀번호 오류~~ 비밀번호를 확인하세요.");
-			request.setAttribute("url", request.getContextPath()+"/update.lo");
+		if(vo.getMid() == null) {
+			request.setAttribute("msg", "비밀번호 오류입니다. 비밀번호를 확인하세요.");
+			request.setAttribute("url", "update.lo?mid="+mid);
 		}
 		else {
 			vo = new LoginVO();
 			vo.setMid(mid);
+			// vo.setPwd(pwd);
 			vo.setName(name);
 			
-			dao.setUpdateOk(vo);
+			int res = dao.setUpdateOk(vo);
 			
-			HttpSession session = request.getSession();
-			session.setAttribute("sName", name);
-			
-			request.setAttribute("msg", "수정 완료");
-			request.setAttribute("url", request.getContextPath()+"/memberMain.lo");
-			
+			if(res != 0) {
+				HttpSession session = request.getSession();
+				session.setAttribute("sName", name);
+				
+				request.setAttribute("msg", "회원 정보가 수정되었습니다.");
+				request.setAttribute("url", "memberMain.lo");
+			}
+			else {
+				request.setAttribute("msg", "회원정보 수정 실패~~");
+				request.setAttribute("url", "update.lo?mid="+mid);	
+			}
 		}
-		
-		
 	}
 
 }

@@ -12,12 +12,13 @@ public class LogoutCommand implements LoginInterface {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String mid =(String) session.getAttribute("sMid");
+		
+		String mid = (String) session.getAttribute("sMid");
 		
 		session.invalidate();
 		
-		request.setAttribute("msg", mid+"님 로그아웃 되었습니다.");
-		request.setAttribute("url", request.getContextPath()+"/login.lo");
+		request.setAttribute("msg", mid+"님 로그아웃되셨습니다.");
+		request.setAttribute("url", "login.lo");
 	}
 
 }
