@@ -20,7 +20,6 @@ public class MemberLoginOkCommand implements MemberInterface {
 		String pwd = request.getParameter("pwd")==null ? "" : request.getParameter("pwd");
 		
 		MemberDAO dao = new MemberDAO();
-		System.out.println("mid : " + mid);
 		
 		MemberVO vo = dao.getMemberMidCheck(mid);
 		if(!vo.getMid().equals(mid)) {
@@ -39,41 +38,48 @@ public class MemberLoginOkCommand implements MemberInterface {
 		}
 		
 		// 로그인 성공시 처리할 내용들.....(1.세션저장, 2.쿠키저장, 3.방문횟수(총방문횟수,오늘방문횟수), 4.포인트저장....
+		
+		// 방문포인트 처리하기?(최종접속일/방문카운트도 함께 업데이트 처리)
+		// 하루의 방문포인트는 매번 10포인트씩 주기로 한다. 단, 최대 50포이터까지만 인정한다.
+		
+		// 날짜 비교
+		Date today = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String strToday = sdf.format(today);
+		// System.out.println("strToday : " + strToday);
+		
+		if(strToday.equals(vo.getLastDate().substring(0,10))) {
+			// 오늘 다시 방문한 경우
+			vo.setTodayCnt(vo.getTodayCnt()+1);
+			if(vo.getTodayCnt() <= 5) vo.setPoint(vo.getPoint()+10);
+		}
+		else {
+			// 오늘 처음 방문한 경우는 방문카운트를 1로 초기화하고 10포인트 증정
+			vo.setTodayCnt(1);
+			vo.setPoint(vo.getPoint()+10);
+		}
+		
+		// 3.DB작업(변경된 내용들을 DB에 저장(갱신))
+		dao.setLoginUpdate(vo);
+		
+		// 1.세션처리
 		String strLevel = "";
 		if(vo.getLevel() == 0) strLevel = "관리자";
 		else if(vo.getLevel() == 1) strLevel = "준회원";
 		else if(vo.getLevel() == 2) strLevel = "정회원";
 		else if(vo.getLevel() == 3) strLevel = "우수회원";
 		
-		// 오늘 방문 횟수, 총 보유 포인트 처리...
-		Date today = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String strToday = sdf.format(today);
-		//System.out.println("strToday : " + strToday);
-			
-		if(strToday.equals(vo.getLastDate().substring(0,10))) {
-			//오늘 다시 방문한 경우
-			vo.setTodayCnt(vo.getTodayCnt()+1);
-			if(vo.getTodayCnt() <= 5) {
-				vo.setPoint(vo.getPoint()+10);
-			}
-		}
-		else {
-			//오늘 처음 방문한 경우면
-			vo.setTodayCnt(1);
-			vo.setPoint(vo.getPoint()+10);
-		}
+		HttpSession session = request.getSession();
+		session.setAttribute("sMid", mid);
+		session.setAttribute("sNickName", vo.getNickName());
+		session.setAttribute("sLevel", vo.getLevel());
+		session.setAttribute("strLevel", strLevel);
+//		session.setAttribute("sPoint", vo.getPoint());
+//		session.setAttribute("sLastDate", vo.getLastDate());
+//		session.setAttribute("sTodayCnt", vo.getTodayCnt());
 		
-		// 총 방문 횟수 처리..
-		vo.setVisitCnt(vo.getVisitCnt()+1);
 		
-		// DB작업(변경된 내용들을 DB에 저장(갱신))
-		dao.setLoginUpdate(vo);
-		
-		//System.out.println("vo.getVisitCnt : " + vo.getVisitCnt());
-		//System.out.println("vo.getTodayCnt : " + vo.getTodayCnt());
-		
-		// 쿠키 저장
+		// 2.쿠키저장
 		String idSave = request.getParameter("idSave")==null ? "off" : "on";
 		Cookie cookieMid = new Cookie("cMid", mid);
 		cookieMid.setPath("/");
@@ -84,16 +90,6 @@ public class MemberLoginOkCommand implements MemberInterface {
 			cookieMid.setMaxAge(0);
 		}
 		response.addCookie(cookieMid);
-		
-		// 세션 저장
-		HttpSession session = request.getSession();
-		session.setAttribute("sMid", mid);
-		session.setAttribute("sNickName", vo.getNickName());
-		session.setAttribute("sLevel", vo.getLevel());
-		session.setAttribute("strLevel", strLevel);
-		session.setAttribute("sVisitCnt", vo.getVisitCnt());
-		session.setAttribute("sTodayCnt", vo.getTodayCnt());
-		session.setAttribute("sPoint", vo.getPoint());
 		
 		// 처리 완료후 메세지 출력후 회원 메인창으로 전송한다.
 		request.setAttribute("msg", mid+"님 로그인 되었습니다.");

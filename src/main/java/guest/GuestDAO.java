@@ -138,70 +138,25 @@ public class GuestDAO {
 		}
 		return totRecCnt;
 	}
-	
-	// 총 레코드 건수 구하기(같은 이름 개수)
-	public int getTotRecCntName(String name) {
-		int totRecCnt = 0;
-		try {
-			sql = "select count(*) as cnt from guest where name =?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
-			rs = pstmt.executeQuery();
-			rs.next();
-			totRecCnt = rs.getInt("cnt");
-		} catch (SQLException e) {
-			System.out.println("SQL 오류 : " + e.getMessage());
-		} finally {
-			rsClose();
-		}
-		return totRecCnt;
-	}
 
-	// 방명록 이름 검색
-	public ArrayList<GuestVO> getGuestListName(String name) {
-		ArrayList<GuestVO> vos = new ArrayList<>();
+	// member에서 호출.. 회원 아이디/이름/닉네임으로 글을 검색후 검색된 내역 가져가기
+	public ArrayList<GuestVO> getMemberSearch(String mid, String name, String nickName) {
+		ArrayList<GuestVO> vos = new ArrayList<GuestVO>();
 		try {
-			sql = "select * from guest where name = ?";
+			sql = "select * from guest where name = ? or name = ? or name = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, name);
+			pstmt.setString(3, nickName);
 			rs = pstmt.executeQuery();
+			
 			while(rs.next()) {
 				vo = new GuestVO();
 				vo.setIdx(rs.getInt("idx"));
 				vo.setName(rs.getString("name"));
+				vo.setContent(rs.getString("content"));
 				vo.setEmail(rs.getString("email"));
 				vo.setHomePage(rs.getString("homePage"));
-				vo.setContent(rs.getString("content"));
-				vo.setVisitDate(rs.getString("visitDate"));
-				vo.setHostIp(rs.getString("hostIp"));
-				
-				vos.add(vo);
-			}
-		} catch (SQLException e) {
-			System.out.println("SQL 오류 : " + e.getMessage());
-		} finally {
-			rsClose();
-		}
-		return vos;
-	}
-
-	// 이름 검색 자료 모두 가져오기
-	public ArrayList<GuestVO> getGuestListName(int startIndexNo, int pageSize, String name) {
-		ArrayList<GuestVO> vos = new ArrayList<>();
-		try {
-			sql = "select * from guest where name = ? limit ?,?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
-			pstmt.setInt(2, startIndexNo);
-			pstmt.setInt(3, pageSize);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				vo = new GuestVO();
-				vo.setIdx(rs.getInt("idx"));
-				vo.setName(rs.getString("name"));
-				vo.setEmail(rs.getString("email"));
-				vo.setHomePage(rs.getString("homePage"));
-				vo.setContent(rs.getString("content"));
 				vo.setVisitDate(rs.getString("visitDate"));
 				vo.setHostIp(rs.getString("hostIp"));
 				

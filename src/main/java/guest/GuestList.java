@@ -38,7 +38,7 @@ public class GuestList extends HttpServlet{
 		
 		// 블록페이징처리...(시작블록의 번호를 0번으로 처리했다.)
 		// 1.블록의 크기결정(여기선 3으로 결정했다.)
-		int blockSize = 10;
+		int blockSize = 3;
 		
 		// 2.현재페이지가 속한 블록 번호를 구한다.(예:총레코드갯수 38개일경우, 1/2/3페이지는 0블록, 4/5/6페이지는 1블록, 7/8페이지는 2블록
 		int curBlock = (pag - 1) / blockSize;

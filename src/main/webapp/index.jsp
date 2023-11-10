@@ -22,7 +22,10 @@
     <div class="col-sm-4">
       <h2>About Me</h2>
       <h5>Photo of me:</h5>
-      <div class="fakeimg">Fake Image</div>
+      <div class="fakeimg" >
+      	<c:set var="random"><%=(int)(Math.random()*7)+1 %></c:set>
+ 				<p><img src="${ctp}/images/${random}.jpg" height="200px" width="350px"/></p>
+      </div>
       <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
       <h3>Some Links</h3>
       <p>Lorem ipsum dolor sit ame.</p>
