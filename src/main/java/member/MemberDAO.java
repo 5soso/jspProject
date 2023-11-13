@@ -254,13 +254,25 @@ public class MemberDAO {
 		return res;
 	}
 
-	//관리자 - 회원 전체리스트
-	public ArrayList<MemberVO> getMemberList() {
+	// 회원 전체 리스트
+	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, int level) {
 		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
-		try { 
-			sql = "select * from member order by idx desc";
-			pstmt = conn.prepareStatement(sql);
+		try {
+			if(level > 4) {
+				sql = "select *, timestampdiff(day, lastDate, now()) as deleteDiff from member order by idx desc limit ?,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, startIndexNo);
+				pstmt.setInt(2, pageSize);
+			}
+			else {
+				sql = "select *, timestampdiff(day, lastDate, now()) as deleteDiff from member where level = ? order by idx desc limit ?,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, level);
+				pstmt.setInt(2, startIndexNo);
+				pstmt.setInt(3, pageSize);
+			}
 			rs = pstmt.executeQuery();
+			
 			while(rs.next()) {
 				vo = new MemberVO();
 				vo.setIdx(rs.getInt("idx"));
@@ -287,9 +299,10 @@ public class MemberDAO {
 				vo.setLastDate(rs.getString("lastDate"));
 				vo.setTodayCnt(rs.getInt("todayCnt"));
 				
+				vo.setDeleteDiff(rs.getInt("deleteDiff"));
+				
 				vos.add(vo);
 			}
-		
 		} catch (SQLException e) {
 			System.out.println("sql구문 오류 : " + e.getMessage());
 		} finally {
@@ -298,7 +311,7 @@ public class MemberDAO {
 		return vos;
 	}
 
-	//관리자 - 회원등급변경
+	// 회원 등급변경
 	public int setMemberLevelChange(int idx, int level) {
 		int res = 0;
 		try {
@@ -315,16 +328,70 @@ public class MemberDAO {
 		return res;
 	}
 
-	//레벨별 조회
-	public ArrayList<MemberVO> getAdminMemberLevelSearch(int level) {
-		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
+	// 전체(각 레벨별) 회원 인원수 구하기
+	public int getTotRecCnt(int level) {
+		int totRecCnt = 0;
 		try {
-			sql = "select * from member where level=? order by idx desc";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, level);
+			if(level > 4) {
+				sql = "select count(*) as cnt from member";
+				pstmt = conn.prepareStatement(sql);
+			}
+			else {
+				sql = "select count(*) as cnt from member where level = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, level);
+			}
 			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				vo = new MemberVO();
+			rs.next();
+			totRecCnt = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecCnt;
+	}
+
+	// 회원 탈퇴 신청(userDel필드의 값을 NO -> Ok 로 변경처리)
+	public int setMemberDeleteCheck(String mid) {
+		int res = 0;
+		try {
+			sql = "update member set userDel = 'OK' where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 회원 정보 삭제
+	public void setMemberDeleteOk(int idx) {
+		try {
+			sql = "delete from member where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql구문 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+	}
+
+	// idx 검색
+	public MemberVO getMemberIdxSearch(int idx) {
+		vo = new MemberVO();
+		try {
+			sql = "select * from member where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
 				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
 				vo.setPwd(rs.getString("pwd"));
@@ -348,15 +415,13 @@ public class MemberDAO {
 				vo.setStartDate(rs.getString("startDate"));
 				vo.setLastDate(rs.getString("lastDate"));
 				vo.setTodayCnt(rs.getInt("todayCnt"));
-				
-				vos.add(vo);
 			}
 		} catch (SQLException e) {
-			System.out.println("sql구문 오류 : " + e.getMessage());
+			System.out.println("sql오류 : " + e.getMessage());
 		} finally {
 			rsClose();
 		}
-		return vos;
+		return vo;
 	}
 	
 }

@@ -133,8 +133,8 @@
     	let mid = myform.mid.value;
     	let url = "${ctp}/memberIdCheck.mem?mid="+mid;
     	
-    	if(mid.trim().length<4) {
-    		alert("아이디는 4글자이상 입력하세요!");
+    	if(mid.trim() == "") {
+    		alert("아이디를 입력하세요!");
     		myform.mid.focus();
     	}
     	else {

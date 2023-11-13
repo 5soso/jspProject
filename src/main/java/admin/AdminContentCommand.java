@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import member.MemberDAO;
 import member.MemberVO;
 
-public class AdminMemberListCheckCommand implements AdminMemberInterface {
+public class AdminContentCommand implements AdminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int level = request.getParameter("level")==null ? 0 : Integer.parseInt(request.getParameter("level"));
+		MemberDAO mDao = new MemberDAO();
 		
-		MemberDAO dao = new MemberDAO();
-		ArrayList<MemberVO> vos = dao.getAdminMemberLevelSearch(level);
-		System.out.println("vos"+vos);
-		request.setAttribute("vos", vos);
+		//ArrayList<MemberVO> mVos = mDao.getMemberList(0,5,1);
+		int mCount = mDao.getTotRecCnt(1);
+		
+		request.setAttribute("mCount", mCount);
 	}
 
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name = "viewport" content ="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>adminContent.jsp</title>
   <jsp:include page="/include/bs4.jsp" />
 </head>
@@ -16,7 +16,7 @@
   <hr/>
   <p>방명록 새글 : ???</p>
   <p>게시글 새글 : ???</p>
-  <p>신규등록회원 : ???</p> <!-- 최초가입일 오늘 날짜, 가입레벨(준회원) 띄우기 -->
+  <p>신규등록회원 : <a href="adminMemberList.ad?level=1">${mCount}</a>건</p>
 </div>
 <p><br/></p>
 </body>

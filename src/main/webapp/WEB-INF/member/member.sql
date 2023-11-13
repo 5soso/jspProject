@@ -34,3 +34,6 @@ create table member(
 desc member;
 
 drop table member;
+
+select *, timestampdiff(day, lastDate, now()) as deleteDiff from member order by idx desc limit 0,5;
+
