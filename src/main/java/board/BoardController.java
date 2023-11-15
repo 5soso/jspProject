@@ -39,6 +39,53 @@ public class BoardController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/include/message.jsp";
 		}
+		else if(com.equals("/boardContent")) {
+			command = new BoardContentCommand();
+			command.execute(request, response);
+			viewPage += "/boardContent.jsp";
+		}
+		else if(com.equals("/boardGoodCheck")) {
+			command = new BoardGoodCheckCommand();
+			command.execute(request, response);
+			return;
+		}
+		/* 아래 좋아요 +1/-1 은 중복되기에 통합처리했음
+		else if(com.equals("/boardGoodCheckPlus")) {
+			command = new BoardGoodCheckPlusCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/boardGoodCheckMinus")) {
+			command = new BoardGoodCheckMinusCommand();
+			command.execute(request, response);
+			return;
+		}
+		*/
+		else if(com.equals("/boardGoodCheckPlusMinus")) {
+			command = new BoardGoodCheckPlusMinusCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/boardUpdate")) {
+			command = new BoardUpdateCommand();
+			command.execute(request, response);
+			viewPage += "/boardUpdate.jsp";
+		}
+		else if(com.equals("/boardUpdateOk")) {
+			command = new BoardUpdateOkCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/boardDelete")) {
+			command = new BoardDeleteCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/boardSearch")) {
+			command = new BoardSearchCommand();
+			command.execute(request, response);
+			viewPage += "/boardSearchList.jsp";
+		}
 		
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}

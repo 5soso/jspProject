@@ -30,11 +30,11 @@
       <td><c:if test="${sLevel != 1}"><a href="boardInput.bo" class="btn btn-success btn-sm">글쓰기</a></c:if></td>
       <td class="text-right">
         <select name="pageSize" id="pageSize" onchange="pageSizeCheck()">
-          <option>3</option>
-          <option>5</option>
-          <option>10</option>
-          <option>15</option>
-          <option>20</option>
+          <option ${pageSize==3 ? "selected" : ""}>3</option>
+          <option ${pageSize==5 ? "selected" : ""}>5</option>
+          <option ${pageSize==10 ? "selected" : ""}>10</option>
+          <option ${pageSize==15 ? "selected" : ""}>15</option>
+          <option ${pageSize==20 ? "selected" : ""}>20</option>
         </select> 건
       </td>
     </tr>
@@ -45,21 +45,58 @@
       <th>글제목</th>
       <th>글쓴이</th>
       <th>글쓴날짜</th>
-      <th>조회수</th>
+      <th>조회수(좋아요)</th>
     </tr>
     <c:forEach var="vo" items="${vos}" varStatus="st">
       <tr>
-        <td>${vo.idx}</td>
-        <td class="text-left">${vo.title}</td>
+        <td>${curScrStartNo}</td>
+        <td class="text-left">
+        	<a href="boardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}">${vo.title}</a>
+        	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+        </td>
         <td>${vo.nickName}</td>
-        <td>${fn:substring(vo.wDate,0,16)}</td>
-        <td>${vo.readNum}</td>
+        <td> <!--new.gif가 표시된 글은 시간만 표시시켜주고, 그렇지 않은 자료는 일자만 표시시켜주시오.-->
+          ${fn:substring(vo.wDate,0,16)}
+        </td>
+        <td>${vo.readNum}(${vo.good})</td>
       </tr>
       <tr><td colspan="5" class="m-0 p-0"></td></tr>
+      <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>
     </c:forEach>
   </table>
 </div>
-<!-- 페이징 처리 -->
+<!-- 블록페이지 시작(1블록의 크기를 3개(3Page)로 한다. 한페이지 기본은 5개 -->
+<br/>
+<div class="text-center">
+  <ul class="pagination justify-content-center">
+    <c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="boardList.bo?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+  	<c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="boardList.bo?pag=${(curBlock-1)*blockSize+1}&pageSize=${pageSize}">이전블록</a></li></c:if>
+  	<c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize)+blockSize}" varStatus="st">
+	    <c:if test="${i <= totPage && i == pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="boardList.bo?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+	    <c:if test="${i <= totPage && i != pag}"><li class="page-item"><a class="page-link text-secondary" href="boardList.bo?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+  	</c:forEach>
+  	<c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="boardList.bo?pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
+  	<c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="boardList.bo?pag=${totPage}&pageSize=${pageSize}">마지막페이지</a></li></c:if>
+  </ul>
+</div>
+<!-- 블록페이지 끝 -->
+<br/>
+<!-- 검색기 처리 -->
+<div class="container text-center">
+	<form name="searchForm" method="post" action="boardSearch.bo">
+		<b>검색 : </b>
+		<select name="search" id="search">
+			<option value="title" selected>글제목</option>
+			<option value="nickName">글쓴이</option>
+			<option value="content">글내용</option>
+		</select>
+		<input type="text" name="searchString" id="searchString" />
+		<input type="submit" value="검색" class="btn btn-secondary btn-sm" /> 
+		<input type="hidden" name="pag" value="${pag}" />
+		<input type="hidden" name="pageSize" value="${pageSize}" />
+	</form>
+</div>
+
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />
 </body>
