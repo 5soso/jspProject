@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import admin.complaint.ComplaintInputCommand;
 import admin.member.MemberLevelChangeCommand;
 import member.MemberListCommand;
 
@@ -23,6 +24,7 @@ public class AdminController extends HttpServlet {
 		String com = request.getRequestURI();
 		com = com.substring(com.lastIndexOf("/"),com.lastIndexOf("."));
 		
+		
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
 		
@@ -30,6 +32,11 @@ public class AdminController extends HttpServlet {
 			command = new MainCommand();
 			command.execute(request, response);
 			viewPage = "/WEB-INF/main/main.jsp";
+		}
+		else if(com.equals("/complaintInput")) { 
+			command = new ComplaintInputCommand(); 
+			command.execute(request, response); 
+			viewPage = "/include/message.jsp"; 
 		}
 		else if(level > 0) {
 			request.getRequestDispatcher("/").forward(request, response);
@@ -60,7 +67,7 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/member/adminMemberInfor.jsp";
 		}
-		
+
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

@@ -51,12 +51,18 @@
       <tr>
         <td>${curScrStartNo}</td>
         <td class="text-left">
-        	<a href="boardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}">${vo.title}</a>
-        	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+          <a href="boardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}">${vo.title}</a>
+          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+          <c:if test="${vo.replyCnt != 0}">(${vo.replyCnt})</c:if>
         </td>
         <td>${vo.nickName}</td>
-        <td> <!--new.gif가 표시된 글은 시간만 표시시켜주고, 그렇지 않은 자료는 일자만 표시시켜주시오.-->
-          ${fn:substring(vo.wDate,0,16)}
+        <td>
+          <!-- 1일(24시간) 이내는 시간만 표시, 이후는 날짜와 시간을 표시 : 2023-11-16 10:35:25 -->
+          <!-- 단(24시간안에 만족하는 자료), 날짜가 오늘날짜만 시간으로표시하고, 어제날짜는 날짜시간으로 표시하시오. -->
+          <c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
+          <c:if test="${vo.hour_diff <= 24}">
+            ${vo.date_diff == 0 ? fn:substring(vo.wDate,11,19) : fn:substring(vo.wDate,0,16)}
+          </c:if>
         </td>
         <td>${vo.readNum}(${vo.good})</td>
       </tr>
@@ -83,18 +89,18 @@
 <br/>
 <!-- 검색기 처리 -->
 <div class="container text-center">
-	<form name="searchForm" method="post" action="boardSearch.bo">
-		<b>검색 : </b>
-		<select name="search" id="search">
-			<option value="title" selected>글제목</option>
-			<option value="nickName">글쓴이</option>
-			<option value="content">글내용</option>
-		</select>
-		<input type="text" name="searchString" id="searchString" />
-		<input type="submit" value="검색" class="btn btn-secondary btn-sm" /> 
-		<input type="hidden" name="pag" value="${pag}" />
-		<input type="hidden" name="pageSize" value="${pageSize}" />
-	</form>
+  <form name="searchForm" method="post" action="boardSearch.bo">
+    <b>검색 : </b>
+    <select name="search" id="search">
+      <option value="title" selected>글제목</option>
+      <option value="nickName">글쓴이</option>
+      <option value="content">글내용</option>
+    </select>
+    <input type="text" name="searchString" id="searchString"/>
+    <input type="submit" value="검색" class="btn btn-secondary btn-sm"/>${pag}/${pageSize}
+    <%-- <input type="hidden" name="pag" value="${pag}"/> --%> 
+    <input type="hidden" name="pageSize" value="${pageSize}"/>
+  </form>
 </div>
 
 <p><br/></p>

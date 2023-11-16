@@ -16,7 +16,7 @@ public class BoardContentCommand implements BoardInterface {
 		int idx = request.getParameter("idx")==null ? 0 : Integer.parseInt(request.getParameter("idx"));
 		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
 		int pageSize = request.getParameter("pageSize")==null ? 5 : Integer.parseInt(request.getParameter("pageSize"));
-		String flag = request.getParameter("flag")==null ? "" :  request.getParameter("flag");
+		String flag = request.getParameter("flag")==null ? "" : request.getParameter("flag");
 		String search = request.getParameter("search")==null ? "" : request.getParameter("search");
 		String searchString = request.getParameter("searchString")==null ? "" : request.getParameter("searchString");
 		
@@ -35,7 +35,6 @@ public class BoardContentCommand implements BoardInterface {
 		}
 		session.setAttribute("sBoardContentIdx", boardContentIdx);
 		
-		// 1건의 자료 읽어오기
 		BoardVO vo = dao.getBoardContent(idx);
 		
 		request.setAttribute("vo", vo);
@@ -45,11 +44,15 @@ public class BoardContentCommand implements BoardInterface {
 		request.setAttribute("search", search);
 		request.setAttribute("searchString", searchString);
 		
-		// 이전글.다음글 처리
+		// 이전글 / 다음글 처리
 		BoardVO preVo = dao.getPreNexSearch(idx, "preVo");
-		BoardVO nexVo = dao.getPreNexSearch(idx , "nexVo");
+		BoardVO nextVo = dao.getPreNexSearch(idx, "nextVo");
 		request.setAttribute("preVo", preVo);
-		request.setAttribute("nexVo", nexVo);
+		request.setAttribute("nextVo", nextVo);
+		
+		// 댓글 처리
+		ArrayList<BoardReplyVO> replyVos = dao.getBoardReply(idx); //넘기는 idx는 원본글의 idx이다.
+		request.setAttribute("replyVos", replyVos);
 	}
- 
+
 }
