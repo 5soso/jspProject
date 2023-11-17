@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>memberJoin.jsp</title>
+  <title>memberJoin2.jsp</title>
   <jsp:include page="/include/bs4.jsp" />
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="${ctp}/js/woo.js"></script>
@@ -104,24 +104,6 @@
     	let detailAddress = myform.detailAddress.value + " ";
     	let extraAddress = myform.extraAddress.value + " ";
   		myform.address.value = postcode + "/" + roadAddress + "/" + detailAddress + "/" + extraAddress + "/";
-  		
-	  	//이미지 파일 업로드 체크
-    	let fName = document.getElementById("file").value;
-    	let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
-    	let maxSize = 1024 * 1024 * 10;   // 1KByte=1024Byte=10^3Byte=2^10Byte, 1MByte=2^20Byte=10^6Byte, 1GByte=2^30Byte=10^9Byte, 1TByte=2^40Byte=10^12Byte)
-
-    	if(fName.trim() == "") {
-    		alert("업로드할 파일을 선택하세요!");
-    		return false;
-    	}
-    	
-    	let fileSize = document.getElementById("file").files[0].size;
-    	if(ext != 'jpg' && ext != 'gif' && ext != 'png' && ext != 'zip' && ext != 'hwp' && ext != 'ppt' && ext != 'pptx' && ext != 'xlsx') {
-    		alert("업로드 가능한 파일은 'jgp/gif/png/zip/hwp/ppt/pptx/xlsx' 만 가능합니다.");
-    	}
-    	else if(fileSize > maxSize) {
-    		alert("업로드할 파일의 최대용량은 10MByte입니다.");
-    	}
     	
     	// 전송전에 모든 체크가 끝나면 submitFlag가 1로 되게된다. 이때 값들을 서버로 전송처리한다.
     	if(submitFlag == 1) {
@@ -146,9 +128,6 @@
     	
     }
     
-    	
-    	
-    	
     // 아이디 중복체크
     function idCheck() {
     	let mid = myform.mid.value;
@@ -181,26 +160,13 @@
     	}
     }
     
-    // 선택된 그림 미리보기
-		function imgCheck(e) {
-    	if(e.files && e.files[0]) {
-    		let reader = new FileReader();
-    		reader.onload = function(e) {
-    			document.getElementById("demo").src = e.target.result;
-    		}
-    		reader.readAsDataURL(e.files[0]);
-    	}
-    	else {
-    		document.getElementById("demo").src = "";
-    	}
-    }
   </script>
 </head>
 <body>
 <jsp:include page="/include/header.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" action="${ctp}/memberJoinOk.mem" class="was-validated" enctype="multipart/form-data">
+  <form name="myform" method="post" action="${ctp}/memberJoinOk.mem" class="was-validated">
     <h2>회 원 가 입</h2>
     <br/>
     <div class="form-group">
@@ -371,8 +337,7 @@
     </div>
     <div  class="form-group">
       회원 사진(파일용량:2MByte이내) :
-      <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control-file border mb-2"/>
-    	<div><img id="demo" width="100px" /></div>
+      <input type="file" name="fName" id="file" class="form-control-file border"/>
     </div>
     <button type="button" class="btn btn-secondary" onclick="fCheck()">회원가입</button> &nbsp;
     <button type="reset" class="btn btn-secondary">다시작성</button> &nbsp;

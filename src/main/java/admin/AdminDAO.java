@@ -16,6 +16,8 @@ public class AdminDAO {
 	
 	private String sql = "";
 	
+	ComplaintVO vo = null;
+	
 	
 	// pstmt 객체 반납
 	public void pstmtClose() {
@@ -53,5 +55,32 @@ public class AdminDAO {
 			System.out.println("sql구문 오류 : " + e.getMessage());
 		} pstmtClose();
 		return res;
+	}
+
+	// 게시글 신고 담기
+	public ArrayList<ComplaintVO> getBoardComplaintList() {
+		ArrayList<ComplaintVO> vos = new ArrayList<>();
+		try {
+			sql = "select * from complaint order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				vo = new ComplaintVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setPart(rs.getString("part"));
+				vo.setPartIdx(rs.getInt("partIdx"));
+				vo.setCpMid(rs.getString("cpMid"));
+				vo.setCpContent(rs.getString("cpContent"));
+				vo.setCpDate(rs.getString("cpDate"));
+				
+				vos.add(vo);
+			}
+		} catch (Exception e) {
+			System.out.println("sql구문 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
 	}
 }
