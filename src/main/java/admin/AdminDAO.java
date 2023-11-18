@@ -40,7 +40,7 @@ public class AdminDAO {
 		}
 	}
 
-	// 게시글 신고처리
+	// 게시글신고 처리
 	public int setBoardComplaint(ComplaintVO vo) {
 		int res = 0;
 		try {
@@ -57,7 +57,7 @@ public class AdminDAO {
 		return res;
 	}
 
-	// 게시글 신고 담기
+	// 게시글신고 출력
 	public ArrayList<ComplaintVO> getBoardComplaintList() {
 		ArrayList<ComplaintVO> vos = new ArrayList<>();
 		try {
@@ -82,5 +82,19 @@ public class AdminDAO {
 			rsClose();
 		}
 		return vos;
+	}
+
+	// 게시글 신고 비공개처리(비공개로 하고싶은데 일단 삭제하기)
+	public int getBoardComplaintDelete(int idx) {
+		int res = 0;
+		try {
+			sql = "delete from complaint where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			res = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("sql구문 오류 : " + e.getMessage());
+		} pstmtClose();
+		return res;
 	}
 }

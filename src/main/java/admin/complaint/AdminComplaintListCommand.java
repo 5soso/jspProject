@@ -18,6 +18,7 @@ public class AdminComplaintListCommand implements AdminInterface {
 		
 		ArrayList<ComplaintVO> vos = dao.getBoardComplaintList();
 		
+		request.setAttribute("vos", vos);
 	}
 
 }

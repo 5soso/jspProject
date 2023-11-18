@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import admin.complaint.AdminComplaintListCommand;
+import admin.complaint.AdminComplaintListOkCommand;
 import admin.complaint.ComplaintInputCommand;
 import admin.member.MemberLevelChangeCommand;
 import member.MemberListCommand;
@@ -68,12 +69,16 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/member/adminMemberInfor.jsp";
 		}
-
 		 else if(com.equals("/adminComplaintList")) {
 			command = new AdminComplaintListCommand();
 			command.execute(request, response);
 			viewPage += "/member/adminComplaintList.jsp";
 		}
+		 else if(com.equals("/adminComplaintListOk")) {
+			 command = new AdminComplaintListOkCommand();
+			 command.execute(request, response);
+			 viewPage += "/member/adminComplaintList.jsp";
+		 }
 
 
 		request.getRequestDispatcher(viewPage).forward(request, response);

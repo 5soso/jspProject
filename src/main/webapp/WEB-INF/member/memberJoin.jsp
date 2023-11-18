@@ -109,9 +109,9 @@
     	let fName = document.getElementById("file").value;
     	let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
     	let maxSize = 1024 * 1024 * 10;   // 1KByte=1024Byte=10^3Byte=2^10Byte, 1MByte=2^20Byte=10^6Byte, 1GByte=2^30Byte=10^9Byte, 1TByte=2^40Byte=10^12Byte)
-
-    	if(fName.trim() == "") {
-    		alert("업로드할 파일을 선택하세요!");
+    	
+    	if(fName.trim == "") {
+    		alert("업로드할 파일을 선택하세요.");
     		return false;
     	}
     	
@@ -145,9 +145,6 @@
     	}
     	
     }
-    
-    	
-    	
     	
     // 아이디 중복체크
     function idCheck() {
@@ -192,6 +189,7 @@
     	}
     	else {
     		document.getElementById("demo").src = "";
+    		//document.getElementById("demo").src = "${ctp}/images/member/noimage.jpg";
     	}
     }
   </script>
@@ -371,7 +369,8 @@
     </div>
     <div  class="form-group">
       회원 사진(파일용량:2MByte이내) :
-      <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control-file border mb-2"/>
+     <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control-file border mb-2"/>
+    	<%-- <div><img src="${ctp}/images/member/noimage.jpg" id="demo" width="100px" /></div> --%>
     	<div><img id="demo" width="100px" /></div>
     </div>
     <button type="button" class="btn btn-secondary" onclick="fCheck()">회원가입</button> &nbsp;
