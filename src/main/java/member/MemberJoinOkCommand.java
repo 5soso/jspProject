@@ -21,10 +21,9 @@ public class MemberJoinOkCommand implements MemberInterface {
 		
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 		
-		//String originalFileName= multipartRequest.getOriginalFileName("fName");
-		
+		// String originalFileName = multipartRequest.getOriginalFileName("fName");
 		String photo = multipartRequest.getFilesystemName("fName");
-		if(photo == null) photo = "noImage.jpg";
+		if(photo == null) photo = "noimage.jpg";
 		
 		String mid = multipartRequest.getParameter("mid")==null ? "" : multipartRequest.getParameter("mid");
 		String pwd = multipartRequest.getParameter("pwd")==null ? "" : multipartRequest.getParameter("pwd");
@@ -91,8 +90,8 @@ public class MemberJoinOkCommand implements MemberInterface {
 		vo.setContent(content);
 		vo.setUserInfor(userInfor);
 		
-		//System.out.println("vo : " + vo);
-		System.out.println("photo : " + photo);
+		// System.out.println("vo : " + vo);
+		
 		int res = dao.setMemberJoinOk(vo);
 		
 		if(res == 1) {

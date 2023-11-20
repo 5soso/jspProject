@@ -1,6 +1,6 @@
-package admin.complaint;
+package admin.board;
 
-public class ComplaintVO {
+public class BoardComplaintVO {
 	private int idx;
 	private String part;
 	private int partIdx;
@@ -47,8 +47,7 @@ public class ComplaintVO {
 	
 	@Override
 	public String toString() {
-		return "ComplaintVO [idx=" + idx + ", part=" + part + ", partIdx=" + partIdx + ", cpMid=" + cpMid + ", cpContent="
-				+ cpContent + ", cpDate=" + cpDate + "]";
+		return "BoardComplaintVO [idx=" + idx + ", part=" + part + ", partIdx=" + partIdx + ", cpMid=" + cpMid
+				+ ", cpContent=" + cpContent + ", cpDate=" + cpDate + "]";
 	}
-	
 }

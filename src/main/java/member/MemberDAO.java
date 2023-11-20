@@ -258,7 +258,7 @@ public class MemberDAO {
 	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, int level) {
 		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 		try {
-			if(level > 4) {
+			if(level != 99 && level > 4) {
 				sql = "select *, timestampdiff(day, lastDate, now()) as deleteDiff from member order by idx desc limit ?,?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, startIndexNo);
@@ -315,7 +315,8 @@ public class MemberDAO {
 	public int setMemberLevelChange(int idx, int level) {
 		int res = 0;
 		try {
-			sql = "update member set level = ? where idx = ?";
+			// sql = "update member set level = ? where idx = ?";
+			sql = "update member set level = ?, userDel = 'NO' where idx = ?";	// DB설계에서 userDel필드를 추가해 두었기에 level=99가 들어올때는 관리자가 변경한 level로 지정하고 탈퇴처리를 해제한다.(다시 설계시는 userDel필드는 필요없다. level=99를 탈퇴신청회원으로 두었기에..)
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, level);
 			pstmt.setInt(2, idx);
@@ -332,7 +333,7 @@ public class MemberDAO {
 	public int getTotRecCnt(int level) {
 		int totRecCnt = 0;
 		try {
-			if(level > 4) {
+			if(level != 99 && level > 4) {
 				sql = "select count(*) as cnt from member";
 				pstmt = conn.prepareStatement(sql);
 			}
@@ -352,11 +353,11 @@ public class MemberDAO {
 		return totRecCnt;
 	}
 
-	// 회원 탈퇴 신청(userDel필드의 값을 NO -> Ok 로 변경처리)
+	// 회원 탈퇴 신청(userDel필드의 값을 NO -> Ok 로 변경처리, level을 99번으로 변경, 즉 userDel필드는 필요없어짐. 다음설계시는 뺄것..)
 	public int setMemberDeleteCheck(String mid) {
 		int res = 0;
 		try {
-			sql = "update member set userDel = 'OK' where mid = ?";
+			sql = "update member set userDel = 'OK', level = 99 where mid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			res = pstmt.executeUpdate();
@@ -369,20 +370,22 @@ public class MemberDAO {
 	}
 
 	// 회원 정보 삭제
-	public void setMemberDeleteOk(int idx) {
+	public int setMemberDeleteOk(int idx) {
+		int res = 0;
 		try {
 			sql = "delete from member where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, idx);
-			pstmt.executeUpdate();
+			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("sql구문 오류 : " + e.getMessage());
 		} finally {
 			pstmtClose();
 		}
+		return res;
 	}
 
-	// idx 검색
+	// 회원 idx로 검색처리
 	public MemberVO getMemberIdxSearch(int idx) {
 		vo = new MemberVO();
 		try {

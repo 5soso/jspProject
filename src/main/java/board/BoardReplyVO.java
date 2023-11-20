@@ -52,7 +52,6 @@ public class BoardReplyVO {
 		this.content = content;
 	}
 	
-	
 	@Override
 	public String toString() {
 		return "BoardReplyVO [idx=" + idx + ", boardIdx=" + boardIdx + ", mid=" + mid + ", nickName=" + nickName

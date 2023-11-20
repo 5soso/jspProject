@@ -11,7 +11,7 @@ public class MainCommand implements AdminInterface {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 초기화면에 상품이미지(title image)를 랜덤하게 올려주기
-		int mainImage1 = (int) (Math.random()*7) + 1;
+		int mainImage1 = (int) (Math.random()*5) + 1;
 		int mainImage2 = (int) (Math.random()*7) + 8;
 		
 		// 메인 화면에 처리해야할 내용들...

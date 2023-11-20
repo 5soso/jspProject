@@ -45,7 +45,7 @@
 	        <a class="nav-link" href="boardList.bo">Board</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="/PdsList">Pds</a>
+	       <c:if test="${level != 1}"><a class="nav-link" href="pdsList.pds">Pds</a></c:if> 
 	      </li>    
 	      <li class="nav-item ml-2 mr-2">
 	        <div class="dropdown">
@@ -69,9 +69,9 @@
 				    <div class="dropdown-menu">
 				      <a class="dropdown-item" href="fileUpload1.st">싱글파일업로드1</a>
 				      <a class="dropdown-item" href="fileUpload2.st">싱글파일업로드2</a>
-				      <a class="dropdown-item" href="fileUpload3.st">멀티파일업로드3</a>
-				      <a class="dropdown-item" href="fileUpload4.st">멀티파일업로드4</a>
-				      <a class="dropdown-item" href="fileDownload.st">다운로드 이동</a>
+				      <a class="dropdown-item" href="fileUpload3.st">멀티파일업로드1</a>
+				      <a class="dropdown-item" href="fileUpload4.st">멀티파일업로드2</a>
+				      <a class="dropdown-item" href="fileDownload.st">다운로드이동</a>
 				    </div>
 				  </div>
 	      </li>
@@ -81,7 +81,7 @@
 				    <div class="dropdown-menu">
 				      <a class="dropdown-item" href="memberMain.mem">회원메인방</a>
 				      <a class="dropdown-item" href="memberPwdCheck.mem">회원정보수정</a>
-				  		<c:if test="${sLevel != 1}"><a class="dropdown-item" href="mList.mem">회원리스트</a></c:if>
+				      <c:if test="${sLevel != 1}"><a class="dropdown-item" href="mList.mem">회원리스트</a></c:if>
 				      <a class="dropdown-item" href="javascript:memberDelcheck()">회원탈퇴</a>
 				      <c:if test="${sLevel == 0}"><a class="dropdown-item" href="adminMain.ad">관리자메뉴</a></c:if>
 				    </div>

@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import admin.complaint.AdminComplaintListCommand;
-import admin.complaint.AdminComplaintListOkCommand;
-import admin.complaint.ComplaintInputCommand;
+import admin.board.BoardComplaintInputCommand;
+import admin.member.AdminMemberInforCommand;
 import admin.member.MemberLevelChangeCommand;
 import member.MemberListCommand;
 
@@ -26,19 +25,18 @@ public class AdminController extends HttpServlet {
 		String com = request.getRequestURI();
 		com = com.substring(com.lastIndexOf("/"),com.lastIndexOf("."));
 		
-		
 		HttpSession session = request.getSession();
-		int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
+		int level = session.getAttribute("sLevel")==null ? 999 : (int) session.getAttribute("sLevel");
 		
 		if(com.equals("/main")) {
 			command = new MainCommand();
 			command.execute(request, response);
 			viewPage = "/WEB-INF/main/main.jsp";
 		}
-		else if(com.equals("/complaintInput")) { 
-			command = new ComplaintInputCommand(); 
-			command.execute(request, response); 
-			viewPage = "/include/message.jsp"; 
+		else if(com.equals("/boardComplaintInput")) {
+			command = new BoardComplaintInputCommand();
+			command.execute(request, response);
+			return;
 		}
 		else if(level > 0) {
 			request.getRequestDispatcher("/").forward(request, response);
@@ -69,18 +67,12 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/member/adminMemberInfor.jsp";
 		}
-		 else if(com.equals("/adminComplaintList")) {
-			command = new AdminComplaintListCommand();
+		else if(com.equals("/boardComplaintList")) {
+			command = new BoardComplaintInputCommand();
 			command.execute(request, response);
-			viewPage += "/member/adminComplaintList.jsp";
+			viewPage += "/complaint/boardComplaintList.jsp";
 		}
-		 else if(com.equals("/adminComplaintListOk")) {
-			 command = new AdminComplaintListOkCommand();
-			 command.execute(request, response);
-			 viewPage += "/member/adminComplaintList.jsp";
-		 }
-
-
+		
 		request.getRequestDispatcher(viewPage).forward(request, response);
 	}
 }

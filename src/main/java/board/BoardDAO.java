@@ -44,16 +44,16 @@ public class BoardDAO {
 		try {
 			if(search.equals("")) {
 				sql = "select *,datediff(wDate, now()) as date_diff, timestampdiff(hour,wDate, now()) as hour_diff, "
-						+ "(select count(*) from boardReply where boardIdx=board.idx) as replyCnt "
-						+ "from board order by idx desc limit ?, ?";
+						+ "(select count(*) from boardReply where boardIdx=b.idx) as replyCnt "
+						+ "from board b order by idx desc limit ?, ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, startIndexNo);
 				pstmt.setInt(2, pageSize);
 			}
 			else {
 				sql = "select *,datediff(wDate, now()) as date_diff, timestampdiff(hour,wDate, now()) as hour_diff, "
-						+ "(select count(*) from boardReply where boardIdx=board.idx) as replyCnt "
-						+ "from board where "+search+" like ? order by idx desc limit ?, ?";
+						+ "(select count(*) from boardReply where boardIdx=b.idx) as replyCnt "
+						+ " from board b where "+search+" like ? order by idx desc limit ?, ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, "%"+searchString+"%");
 				pstmt.setInt(2, startIndexNo);
@@ -84,7 +84,7 @@ public class BoardDAO {
 				vos.add(vo);
 			}
 		} catch (SQLException e) {
-			System.out.println("SQL구문 오류 : " + e.getMessage());
+			System.out.println("SQL구문 오류... : " + e.getMessage());
 		} finally {
 			rsClose();
 		}
@@ -124,6 +124,12 @@ public class BoardDAO {
 			}
 			else {
 				sql = "select count(*) as cnt from board where "+search+" like ?";
+				//sql = "select count(*) as cnt from board where 컬럼명 like 변수명";
+				
+				//sql = "select count(*) as cnt from board where 분류 컬럼명 like 학습";
+				//sql = "select count(*) as cnt from board where 분류 컬럼명 like 음식";
+				
+				//sql = "select count(*) as cnt from board where 올린이 컬럼명 like 관리맨";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, "%"+searchString+"%");
 			}
@@ -376,7 +382,7 @@ public class BoardDAO {
 		int res = 0;
 		try {
 			sql = "insert into boardReply values (default,?,?,?,default,?,?)";
-			pstmt= conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, replyVo.getBoardIdx());
 			pstmt.setString(2, replyVo.getMid());
 			pstmt.setString(3, replyVo.getNickName());
@@ -391,7 +397,7 @@ public class BoardDAO {
 		return res;
 	}
 
-	// 댓글 삭제
+	// 댓글 삭제처리
 	public int setBoardReplyDeleteOk(int idx) {
 		int res = 0;
 		try {

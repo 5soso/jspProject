@@ -22,17 +22,17 @@
 <p><br/></p>
 <div class="container">
   <h2 class="text-center">전체 회원 리스트</h2>
-  <table class="table">
+  <table class="table table-borderless m-0 p-0 text-right">
     <tr>
       <td>
         <div>
           <select name="pageSize" id="pageSize" onchange="pageSizeCheck()">
-            <option value="3" ${pageSize == 3 ? "selected" : ""}>3</option>
+            <option value="3"  ${pageSize == 3? "selected" : ""}>3</option>
             <option value="5"  ${pageSize == 5 ? "selected" : ""}>5</option>
-            <option value="10"  ${pageSize == 10 ? "selected" : ""}>10</option>
-            <option value="15"  ${pageSize == 15 ? "selected" : ""}>15</option>
-            <option value="20"  ${pageSize == 20 ? "selected" : ""}>20</option>
-          </select>
+            <option value="10" ${pageSize == 10 ? "selected" : ""}>10</option>
+            <option value="15" ${pageSize == 15 ? "selected" : ""}>15</option>
+            <option value="20" ${pageSize == 20 ? "selected" : ""}>20</option>
+          </select> 건
         </div>
       </td>
     </tr>
@@ -46,17 +46,17 @@
       <th>성별</th>
       <th>공개여부</th>
       <th>오늘방문횟수</th>
-      <th>회원등급</th>
+      <!-- <th>회원등급</th> -->
     </tr>
     <c:forEach var="vo" items="${vos}" varStatus="st">
       <tr>
         <td>${curScrStartNo}</td>
-        <td><a href="mInfor.mem?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}">${vo.mid}</a></td>
+        <td><a href="mInfor.mem?idx=${vo.idx}">${vo.mid}</a></td>
         <td>${vo.nickName}</td>
         <%-- 
         <td>
-        	<c:if test="${vo.userInfo == '공개'}">${vo.name}</c:if>
-        	<c:if test="${vo.userInfo != '공개'}">비공개</c:if>
+          <c:if test="${vo.userInfor == '공개'}">${vo.name}</c:if>
+          <c:if test="${vo.userInfor != '공개'}">비공개</c:if>
         </td>
          --%>
         <c:if test="${vo.userInfor == '공개' || vo.mid == sMid || sLevel == 0}">
@@ -64,18 +64,20 @@
 	        <td>${vo.gender}</td>
 	        <td>${vo.userInfor}</td>
 	        <td>${vo.todayCnt}</td>
+	        <%-- 
 	        <td>
-	        	<c:choose>
-	        		<c:when test="${vo.level == 0}">관리자</c:when>
-	        		<c:when test="${vo.level == 1}">준회원</c:when>
-	        		<c:when test="${vo.level == 2}">정회원</c:when>
-	        		<c:when test="${vo.level == 3}">우수회원</c:when>
-	        		<%-- <c:otherwise>우수회원</c:otherwise> --%>
-	        	</c:choose>
+	          <c:choose>
+	            <c:when test="${vo.level == 0}">관리자</c:when>
+	            <c:when test="${vo.level == 1}">준회원</c:when>
+	            <c:when test="${vo.level == 2}">정회원</c:when>
+	            <c:when test="${vo.level == 3}">우수회원</c:when>
+	            <c:otherwise></c:otherwise>
+	          </c:choose>
 	        </td>
+	         --%>
         </c:if>
         <c:if test="${vo.userInfor != '공개' && vo.mid != sMid && sLevel != 0}">
-         	<td colspan="5">비공개</td>
+          <td colspan="4">비공개</td>
         </c:if>
       </tr>
       <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>

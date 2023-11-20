@@ -21,7 +21,7 @@ public class MemberController extends HttpServlet {
 		com = com.substring(com.lastIndexOf("/"),com.lastIndexOf("."));
 		
 		HttpSession session = request.getSession();
-		int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
+		int level = session.getAttribute("sLevel")==null ? 999 : (int) session.getAttribute("sLevel");
 		
 		
 		if(com.equals("/memberJoin")) {

@@ -1,24 +1,20 @@
-package admin.complaint;
+package pds;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import admin.AdminDAO;
-import admin.AdminInterface;
-
-public class AdminComplaintListCommand implements AdminInterface {
+public class PdsDownNumCheckCommand implements PdsInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AdminDAO dao = new AdminDAO();
+		int idx = request.getParameter("idx")==null ? 0 : Integer.parseInt(request.getParameter("idx"));
 		
-		ArrayList<ComplaintVO> vos = dao.getBoardComplaintList();
+		PdsDAO dao = new PdsDAO();
 		
-		request.setAttribute("vos", vos);
+		dao.setpdsDownNumCheck(idx);
 	}
 
 }

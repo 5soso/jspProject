@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import common.SecurityUtil;
 
 public class MemberJoinOkCommand2 implements MemberInterface {
-	
-	// memberJoinOkCommand2
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");

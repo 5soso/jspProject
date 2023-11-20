@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class BoardReplytDeleteCommand implements BoardInterface {
+public class BoardReplyDeleteCommand implements BoardInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -17,7 +17,6 @@ public class BoardReplytDeleteCommand implements BoardInterface {
 		int res = dao.setBoardReplyDeleteOk(idx);
 		
 		response.getWriter().write(res+"");
-		
 	}
 
 }
