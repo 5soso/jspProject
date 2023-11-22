@@ -14,8 +14,8 @@ import study2.pdstest.FileUpload1OkCommand;
 import study2.pdstest.FileUpload2OkCommand;
 import study2.pdstest.FileUpload3OkCommand;
 import study2.pdstest.FileUpload4OkCommand;
-import study2.pdstest.JavaFileDownloadCommand;
-import study2.pdstest.TempFileDelteCommand;
+import study2.pdstest.JavaFileDownloadCommand3;
+import study2.pdstest.TempFileDeleteCommand;
 
 @SuppressWarnings("serial")
 @WebServlet("*.st")
@@ -76,15 +76,25 @@ public class StudyController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/pdstest/fileDownload.jsp";
 		}
-		else if(com.equals("/tempFileDelte")) {
-			command = new TempFileDelteCommand();
+		else if(com.equals("/tempFileDelete")) {
+			command = new TempFileDeleteCommand();
 			command.execute(request, response);
 			return;
 		}
 		else if(com.equals("/javaFileDownload")) {
-			command = new JavaFileDownloadCommand();
+			command = new JavaFileDownloadCommand3();
 			command.execute(request, response);
-			return; //다운로드하고 갈 곳 없기 때문에 return 처리한다.
+			return;
+		}
+		else if(com.equals("/calendar1")) {
+			command = new Calendar1Command();
+			command.execute(request, response);
+			viewPage += "/calendar/calendar1.jsp";
+		}
+		else if(com.equals("/calendar2")) {
+			command = new Calendar2Command();
+			command.execute(request, response);
+			viewPage += "/calendar/calendar2.jsp";
 		}
 		
 		request.getRequestDispatcher(viewPage).forward(request, response);

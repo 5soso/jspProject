@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import study2.StudyInterface;
 
-public class TempFileDelteCommand implements StudyInterface {
+public class TempFileDeleteCommand implements StudyInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -17,9 +17,9 @@ public class TempFileDelteCommand implements StudyInterface {
 		
 		String realPath = request.getServletContext().getRealPath("/images/pdstest/");
 		
-		//new File(realPath+fileName).delete();
+		// new File(realPath+fileName).delete();
 		
-		File file	= new File(realPath+fileName);
+		File file = new File(realPath+fileName);
 		
 		String res = "0";
 		if(file.exists()) {

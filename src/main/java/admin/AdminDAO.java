@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import admin.board.BoardComplaintVO;
+import admin.review.ReviewVO;
 import common.GetConn;
 
 public class AdminDAO {
@@ -50,6 +51,57 @@ public class AdminDAO {
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 게시글 신고글 불러오기
+	public ArrayList<BoardComplaintVO> boardComplaintList() {
+		ArrayList<BoardComplaintVO> vos = new ArrayList<BoardComplaintVO>();
+		try {
+			sql = "select date_format(c.cpDate, '%Y-%m-%d %H:%i') as cpDate,c.*,b.nickName as name, b.title as title from complaint c, board b where c.partIdx=b.idx order by c.idx desc";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardComplaintVO vo = new BoardComplaintVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setPart(rs.getString("part"));
+				vo.setPartIdx(rs.getInt("partIdx"));
+				vo.setCpMid(rs.getString("cpMid"));
+				vo.setCpContent(rs.getString("cpContent"));
+				vo.setCpDate(rs.getString("cpDate"));
+				
+				vo.setName(rs.getString("name"));
+				vo.setTitle(rs.getString("title"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	public int setReviewInputOk(ReviewVO vo) {
+		int res = 0;
+		try {
+			sql = "insert into review values (default,?,?,?,?,?,default)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPart());
+			pstmt.setInt(2, vo.getPartIdx());
+			pstmt.setString(3, vo.getMid());
+			pstmt.setInt(4, vo.getStar());
+			pstmt.setString(5, vo.getContent());
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
 		}
 		return res;
 	}

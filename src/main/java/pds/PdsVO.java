@@ -16,8 +16,9 @@ public class PdsVO {
 	private String content;
 	private String hostIp;
 	
-	private int hour_diff; //자료실 게시글 24시간 동안 new.gif 이미지 표시를 위한 변수
+	// 새글 처리시(24시간 이내) 날짜체크변수와 시간체크변수 선언
 	private int date_diff;
+	private int hour_diff;
 	
 	public int getIdx() {
 		return idx;
@@ -103,26 +104,24 @@ public class PdsVO {
 	public void setHostIp(String hostIp) {
 		this.hostIp = hostIp;
 	}
-	public int getHour_diff() {
-		return hour_diff;
-	}
-	public void setHour_diff(int hour_diff) {
-		this.hour_diff = hour_diff;
-	}
 	public int getDate_diff() {
 		return date_diff;
 	}
 	public void setDate_diff(int date_diff) {
 		this.date_diff = date_diff;
 	}
+	public int getHour_diff() {
+		return hour_diff;
+	}
+	public void setHour_diff(int hour_diff) {
+		this.hour_diff = hour_diff;
+	}
 	
 	@Override
 	public String toString() {
 		return "PdsVO [idx=" + idx + ", mid=" + mid + ", nickName=" + nickName + ", fName=" + fName + ", fSName=" + fSName
 				+ ", fSize=" + fSize + ", title=" + title + ", part=" + part + ", pwd=" + pwd + ", fDate=" + fDate
-				+ ", downNum=" + downNum + ", openSw=" + openSw + ", content=" + content + ", hostIp=" + hostIp + ", hour_diff="
-				+ hour_diff + ", date_diff=" + date_diff + "]";
+				+ ", downNum=" + downNum + ", openSw=" + openSw + ", content=" + content + ", hostIp=" + hostIp + ", date_diff="
+				+ date_diff + ", hour_diff=" + hour_diff + "]";
 	}
-	
-	
 }

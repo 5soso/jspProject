@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import admin.review.ReviewVO;
 import common.GetConn;
 
 public class PdsDAO {
@@ -41,17 +42,17 @@ public class PdsDAO {
 	// 자료실 전체(part) 리스트
 	public ArrayList<PdsVO> getPdsList(int startIndexNo, int pageSize, String part) {
 		ArrayList<PdsVO> vos = new ArrayList<PdsVO>();
-		//String col = "title";
 		try {
 			if(part.equals("전체")) {
-				sql = "select *,datediff(fDate, now()) as date_diff, timestampdiff(hour,fDate, now()) as hour_diff from pds order by idx desc limit ?,?";
+				sql = "select *,datediff(fDate, now()) as date_diff, timestampdiff(hour,fDate, now()) as hour_diff "
+						+ "from pds order by idx desc limit ?,?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, startIndexNo);
 				pstmt.setInt(2, pageSize);
 			}
 			else {
-				sql = "select *,datediff(fDate, now()) as date_diff, timestampdiff(hour,fDate, now()) as hour_diff from pds where part = ? order by idx desc limit ?,?";
-				//sql = "select * from pds where "+col+" like % % order by idx desc";
+				sql = "select *,datediff(fDate, now()) as date_diff, timestampdiff(hour,fDate, now()) as hour_diff "
+						+ "from pds where part = ? order by idx desc limit ?,?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, part);
 				pstmt.setInt(2, startIndexNo);
@@ -76,8 +77,8 @@ public class PdsDAO {
 				vo.setContent(rs.getString("content"));
 				vo.setHostIp(rs.getString("hostIp"));
 				
-				vo.setDate_diff(rs.getInt("date_diff"));
 				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setDate_diff(rs.getInt("date_diff"));
 				
 				vos.add(vo);
 			}
@@ -104,8 +105,8 @@ public class PdsDAO {
 			pstmt.setString(7, vo.getPart());
 			pstmt.setString(8, vo.getPwd());
 			pstmt.setString(9, vo.getOpenSw());
-			pstmt.setString(10, vo.getContent());
-			pstmt.setString(11, vo.getHostIp());
+			pstmt.setString(10,vo.getContent());
+			pstmt.setString(11,vo.getHostIp());
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
@@ -115,8 +116,8 @@ public class PdsDAO {
 		return res;
 	}
 
-	// idx 검색처리.. 1건자료 가져오기
-	public PdsVO getIdxSearch(int idx) {
+	// idx검색처리.. 1건자료 가져오기
+	public PdsVO getPdsIdxSearch(int idx) {
 		vo = new PdsVO();
 		try {
 			sql = "select * from pds where idx = ?";
@@ -140,7 +141,6 @@ public class PdsDAO {
 				vo.setContent(rs.getString("content"));
 				vo.setHostIp(rs.getString("hostIp"));
 			}
-			
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
 		} finally {
@@ -165,8 +165,8 @@ public class PdsDAO {
 		return res+"";
 	}
 
-	// 다운로드 수 1회씩 증가시키기
-	public void setpdsDownNumCheck(int idx) {
+	// 다운로드수 1회씩 증가시키기...
+	public void setPdsDownNumCheck(int idx) {
 		try {
 			sql = "update pds set downNum = downNum + 1 where idx = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -179,9 +179,8 @@ public class PdsDAO {
 		}
 	}
 
-	// 자료실의 전체게시글의 레코드 건수 구해오기
+	// 총 레코드 건수 구하기
 	public int getTotRecCnt(String part) {
-		//System.out.println("part : " + part);
 		int totRecCnt = 0;
 		try {
 			if(part.equals("전체")) {
@@ -202,6 +201,36 @@ public class PdsDAO {
 			rsClose();
 		}
 		return totRecCnt;
+	}
+
+	// 리뷰 내역 리스트 가져오기
+	public ArrayList<ReviewVO> getReviewList(int idx, String part) {
+		ArrayList<ReviewVO> rVos = new ArrayList<ReviewVO>();
+		try {
+			sql = "select * from review where partIdx=? and part=? order by idx desc";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.setString(2, part);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ReviewVO vo = new ReviewVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setPart(rs.getString("part"));
+				vo.setPartIdx(rs.getInt("partIdx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setStar(rs.getInt("star"));
+				vo.setContent(rs.getString("content"));
+				vo.setrDate(rs.getString("rDate"));
+				
+				rVos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return rVos;
 	}
 
 }

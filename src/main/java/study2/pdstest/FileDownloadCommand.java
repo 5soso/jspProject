@@ -15,7 +15,7 @@ public class FileDownloadCommand implements StudyInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String realPath = request.getServletContext().getRealPath("/images/pdstest");
 		
-		String[] files = new File(realPath).list(); //realPath에 들어가있는 파일의 경로명을 읽어온다.
+		String[] files = new File(realPath).list();
 		
 		for(String file : files) {
 			System.out.println("file : " + file);

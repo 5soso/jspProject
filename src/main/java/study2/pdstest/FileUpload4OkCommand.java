@@ -14,7 +14,6 @@ import study2.StudyInterface;
 
 public class FileUpload4OkCommand implements StudyInterface {
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String realPath = request.getServletContext().getRealPath("/images/pdstest");
@@ -26,7 +25,7 @@ public class FileUpload4OkCommand implements StudyInterface {
 		
 		// 업로드된 파일의 정보를 추출해보자...
 		
-		Enumeration fileNames = multipartRequest.getFileNames();
+		Enumeration  fileNames = multipartRequest.getFileNames();
 		
 		String file = "";
 		String originalFileName = "";

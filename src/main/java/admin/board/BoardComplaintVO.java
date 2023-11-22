@@ -8,6 +8,9 @@ public class BoardComplaintVO {
 	private String cpContent;
 	private String cpDate;
 	
+	private String name;
+	private String title;
+	
 	public int getIdx() {
 		return idx;
 	}
@@ -44,10 +47,22 @@ public class BoardComplaintVO {
 	public void setCpDate(String cpDate) {
 		this.cpDate = cpDate;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	
 	@Override
 	public String toString() {
 		return "BoardComplaintVO [idx=" + idx + ", part=" + part + ", partIdx=" + partIdx + ", cpMid=" + cpMid
-				+ ", cpContent=" + cpContent + ", cpDate=" + cpDate + "]";
+				+ ", cpContent=" + cpContent + ", cpDate=" + cpDate + ", name=" + name + ", title=" + title + "]";
 	}
 }

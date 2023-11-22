@@ -15,7 +15,6 @@ import common.SecurityUtil;
 
 public class PdsInputOkCommand implements PdsInterface {
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String realPath = request.getServletContext().getRealPath("/images/pds");
@@ -42,27 +41,27 @@ public class PdsInputOkCommand implements PdsInterface {
 		}
 		originalFileName = originalFileName.substring(0, originalFileName.length()-1);
 		filesystemName = filesystemName.substring(0, filesystemName.length()-1);
-		//System.out.println("원본 파일명 : " + originalFileName);
-		//System.out.println("서버에 저장된 파일명 : " + filesystemName);
+//		System.out.println("원본 파일명 : " + originalFileName);
+//		System.out.println("서버에 저장된 파일명 : " + filesystemName);
 		
-		HttpSession	session = request.getSession();
+		HttpSession session = request.getSession();
 		String mid = (String) session.getAttribute("sMid");
 		String nickName = (String) session.getAttribute("sNickName");
 		
-		//업로드시킨 파일을 DB에 저장시키기 위해서 전송된 폼의 내용들을 모두 변수에 받아준다.
-		int fileSize = multipartRequest.getParameter("fileSize")==null ? 0 : Integer.parseInt(multipartRequest.getParameter("fileSize"));
-		String title = multipartRequest.getParameter("title")==null ? "" : multipartRequest.getParameter("title");
-		String part = multipartRequest.getParameter("part")==null ? "" : multipartRequest.getParameter("part");
-		String pwd = multipartRequest.getParameter("pwd")==null ? "" : multipartRequest.getParameter("pwd");
-		String openSw = multipartRequest.getParameter("openSw")==null ? "" : multipartRequest.getParameter("openSw");
-		String content = multipartRequest.getParameter("content")==null ? "" : multipartRequest.getParameter("content");
-		String hostIp = multipartRequest.getParameter("hostIp")==null ? "" : multipartRequest.getParameter("hostIp");
-
-		//비밀번호 암호화(sha256)
-		SecurityUtil security = new SecurityUtil();
-		pwd = security.encryptSHA256(pwd);
+		// 업로드시킨 파일을 DB에 저장시키기 위해서 전송된 폼의 내용들을 모두 변수에 받아준다.
+		int fileSize = multipartRequest.getParameter("fileSize")==null? 0 : Integer.parseInt(multipartRequest.getParameter("fileSize"));
+		String title = multipartRequest.getParameter("title")==null? "" : multipartRequest.getParameter("title");
+		String part = multipartRequest.getParameter("part")==null? "" : multipartRequest.getParameter("part");
+		String pwd = multipartRequest.getParameter("pwd")==null? "" : multipartRequest.getParameter("pwd");
+		String openSw = multipartRequest.getParameter("openSw")==null? "" : multipartRequest.getParameter("openSw");
+		String content = multipartRequest.getParameter("content")==null? "" : multipartRequest.getParameter("content");
+		String hostIp = multipartRequest.getParameter("hostIp")==null? "" : multipartRequest.getParameter("hostIp");
 		
-		//가공처리된 모든 자료들을 VO에 담아서 DB로 넘겨준다.
+		// 비밀번호 암호화(sha256)
+		SecurityUtil secutiry = new SecurityUtil();
+		pwd = secutiry.encryptSHA256(pwd);
+		
+		// 가공처리된 모든 자료들을 VO에 담아서 DB로 넘겨준다.
 		PdsVO vo = new PdsVO();
 		vo.setMid(mid);
 		vo.setNickName(nickName);
@@ -84,8 +83,8 @@ public class PdsInputOkCommand implements PdsInterface {
 			request.setAttribute("url", "pdsList.pds");
 		}
 		else {
-			request.setAttribute("msg", "업로드에 실패하였습니다.");
-			request.setAttribute("url", "pdsList.pds");
+			request.setAttribute("msg", "자료실 업로드 실패~~");
+			request.setAttribute("url", "pdsInput.pds");
 		}
 	}
 

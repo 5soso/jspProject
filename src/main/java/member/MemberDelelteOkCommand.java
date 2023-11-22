@@ -18,10 +18,9 @@ public class MemberDelelteOkCommand implements MemberInterface {
 		
 		int res = dao.setMemberDeleteOk(idx);
 		
-		if(res == 1) {
+		if(res == 1 && !photo.equals("noimages.jpg")) {
 			String realPath = request.getServletContext().getRealPath("/images/member/");
 			new File(realPath + photo).delete();
 		}
 	}
-
 }

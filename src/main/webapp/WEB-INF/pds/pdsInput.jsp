@@ -15,7 +15,8 @@
     function fileBoxAppend() {
     	cnt++;
     	let fileBox = '';
-    	fileBox += '<div id="fBox'+cnt+'">('+cnt+')';
+    	//fileBox += '<div id="fBox'+cnt+'">('+cnt+')';
+    	fileBox += '<div id="fBox'+cnt+'">';
     	fileBox += '<input type="file" name="fName'+cnt+'" id="fName'+cnt+'" class="form-control-file border mb-2" style="float:left;width:85%;" />';
     	fileBox += '<input type="button" value="삭제" onclick="deleteBox('+cnt+')" class="btn btn-danger form-control mb-2 ml-2" style="width:10%;" />';
     	fileBox += '</div>';
@@ -116,7 +117,7 @@
 	    <input type="radio" name="openSw" value="비공개" />비공개
 	  </div>
 	  <div class="mb-2">
-	    비밀번호 : <input type="password" name="pwd" id="pwd" placeholder="비밀번호를 입력하세요" required />
+	    비밀번호 : <input type="password" name="pwd" id="pwd" value="1234" placeholder="비밀번호를 입력하세요" required />
 	  </div>
 	  <div>
 	    <input type="button" value="자료올리기" onclick="fCheck()" class="btn btn-success"/>
