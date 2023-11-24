@@ -43,13 +43,14 @@
     	
     	$("#scheduleInputView").hide();
     	$("#scheduleInputClose").show();
+    	/* $("#scheduleInputForm").slideDown(1000); */
     	$("#demo").html(str);
     }
     
     function scheduleInputClose() {
     	$("#scheduleInputView").show();
     	$("#scheduleInputClose").hide();
-    	$("#scheduleInputForm").hide();
+    	$("#scheduleInputForm").slideUp(500);
     }
     
     // 일정 등록하기
@@ -177,6 +178,12 @@
     	$("#myModal #content").html(content);
     }
   </script>
+  <style>
+    th {
+      text-align: center;
+      background-color: #eee;
+    }
+  </style>
 </head>
 <body>
 <jsp:include page="/include/header.jsp" />
@@ -190,7 +197,10 @@
       <input type="button" value="일정등록" onclick="scheduleInputView()" id="scheduleInputView" class="btn btn-success"/>
       <input type="button" value="일정닫기" onclick="scheduleInputClose()" id="scheduleInputClose" class="btn btn-info"/>
     </div>
-    <div><input type="button" value="돌아가기" onclick="location.href='schedule.sc';" class="btn btn-warning"/></div>
+    <div>
+      <c:set var="ymds" value="${fn:split(ymd,'-')}"/>
+      <input type="button" value="돌아가기" onclick="location.href='schedule.sc?yy=${ymds[0]}&mm=${ymds[1]-1}';" class="btn btn-warning"/>
+    </div>
   </div>
   <div id="demo"></div>
   <hr/>

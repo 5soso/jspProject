@@ -1,4 +1,4 @@
-package schedule;
+package webMessage;
 
 import java.io.IOException;
 
@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
-@WebServlet("*.sc")
-public class ScheduleController extends HttpServlet {
+@WebServlet("*.wm")
+public class WebMessageController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ScheduleInterface command = null;
-		String viewPage = "/WEB-INF/schedule";
+		WebMessageInterface command = null;
+		String viewPage = "/WEB-INF/webMessage";
 		
 		String com = request.getRequestURI();
 		com = com.substring(com.lastIndexOf("/"),com.lastIndexOf("."));
@@ -26,28 +26,28 @@ public class ScheduleController extends HttpServlet {
 		if(level > 4) {
 			request.getRequestDispatcher("/").forward(request, response);
 		}
-		else if(com.equals("/schedule")) {
-			command = new ScheduleCommand();
+		else if(com.equals("/wmMessage")) {
+			command = new WebMessageCommand();
 			command.execute(request, response);
-			viewPage += "/schedule.jsp";
+			viewPage += "/webMessage.jsp";
 		}
-		else if(com.equals("/scheduleMenu")) {
-			command = new ScheduleMenuCommand();
+		else if(com.equals("/wmInputOk")) {
+			command = new WmInputOkCommand();
 			command.execute(request, response);
-			viewPage += "/scheduleMenu.jsp";
+			viewPage = "/include/message.jsp";
 		}
-		else if(com.equals("/scheduleInputOk")) {
-			command = new ScheduleInputOkCommand();
+		else if(com.equals("/wmDeleteCheck")) {
+			command = new WmDeleteCheckCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("/wmDeleteAll")) {
+			command = new WmDeleteAllCommand();
 			command.execute(request, response);
 			return;
 		}
-		else if(com.equals("/scheduleDeleteOk")) {
-			command = new ScheduleDeleteOkCommand();
-			command.execute(request, response);
-			return;
-		}
-		else if(com.equals("/scheduleUpdateOk")) {
-			command = new ScheduleUpdateOkCommand();
+		else if(com.equals("/wmDeleteOne")) {
+			command = new WmDeleteOneCommand();
 			command.execute(request, response);
 			return;
 		}

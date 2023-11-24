@@ -58,14 +58,38 @@
           <c:set var="todaySw" value="${toYear==yy && toMonth==mm && toDay==st.count ? 1 : 0}"/>
           <td id="td${cell}" ${todaySw==1 ? 'class=today' : ''} class="text-left" style="height:90px;">
             <c:set var="ymd" value="${yy}-${mm+1}-${st.count}"/>
-            <a href="scheduleMenu.sc?ymd=${ymd}">${st.count}</a><br/>
+           <%--  
+            <a href="scheduleMenu.sc?ymd=${ymd}">${st.count}<br/>
+	      	    <!-- 해당날짜에 일정이 있다면 part를 출력하게 한다. -->
+	      	    <c:set var="tempPart" value=""/>
+            	<c:set var="tempCnt" value="0"/>
+            	<c:set var="tempSw" value="0"/>
+	      	    <c:forEach var="vo" items="${vos}">
+	      	      <c:if test="${fn:substring(vo.sDate,8,10)==st.count}">
+	        	      <c:if test="${vo.part != tempPart}">
+                    <c:if test="${tempSw != 0}">
+	                    - ${tempPart}(${tempCnt})건<br/>
+	                    <c:set var="tempCnt" value="0"/>
+                    </c:if>
+                    <c:set var="tempPart" value="${vo.part}"/>                  
+                  </c:if>
+                  <c:set var="tempSw" value="1"/>
+                  <c:set var="tempCnt" value="${tempCnt + 1}"/>
+	        	    </c:if>
+	      	    </c:forEach>
+	      	    <c:if test="${tempCnt != 0}">- ${tempPart}(${tempCnt})건</c:if>
+      	    </a>
+      	     --%>
             
-            <!-- 해당날짜에 일정이 있다면 part를 출력한다.(2023-11-22) -->
-            <c:forEach var="vo" items="${vos}">
-              <c:if test="${fn:substring(vo.sDate,8,10)==st.count}">
-	              ${vo.part}<br/>
-              </c:if>
-            </c:forEach>
+            <a href="scheduleMenu.sc?ymd=${ymd}">${st.count}<br/>
+	            <!-- 해당날짜에 일정이 있다면 part를 출력한다.(2023-11-22) -->
+	            <c:forEach var="vo" items="${vos}">
+	              <c:if test="${fn:substring(vo.sDate,8,10)==st.count}">
+		              - ${vo.part}(${vo.partCnt})<br/>
+	              </c:if>
+	            </c:forEach>
+            </a>
+            
             
           </td>
           <c:if test="${cell % 7 == 0}"></tr><tr></c:if>

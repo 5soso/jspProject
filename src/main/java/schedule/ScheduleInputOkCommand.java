@@ -16,17 +16,17 @@ public class ScheduleInputOkCommand implements ScheduleInterface {
 		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
 		
 		ScheduleVO vo = new ScheduleVO();
+		
 		vo.setMid(mid);
 		vo.setPart(part);
 		vo.setsDate(sDate);
 		vo.setContent(content);
-
+		
 		ScheduleDAO dao = new ScheduleDAO();
 		
 		int res = dao.setScheduleInputOk(vo);
 		
-		response.getWriter().write(res + "");
-	
+		response.getWriter().write(res+"");
 	}
 
 }

@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import admin.review.ReviewVO;
 import common.GetConn;
-import pds.PdsVO;
 
 public class ScheduleDAO {
 	private Connection conn = GetConn.getConn();
@@ -44,7 +42,8 @@ public class ScheduleDAO {
 		ArrayList<ScheduleVO> vos = new ArrayList<ScheduleVO>();
 		try {
 			if(sw == 0) {
-			  sql = "select * from schedule where mid = ? and date_format(sDate, '%Y-%m') = ? order by sDate, part";
+			  //sql = "select * from schedule where mid = ? and date_format(sDate, '%Y-%m') = ? order by sDate, part";
+			  sql = "select *, count(part) as partCnt from schedule where mid = ? and date_format(sDate, '%Y-%m') = ? group by sDate,part order by sDate, part";
 			}
 			else if(sw == 1) {
 				sql = "select * from schedule where mid = ? and date_format(sDate, '%Y-%m-%d') = ? order by sDate";
@@ -61,6 +60,8 @@ public class ScheduleDAO {
 				vo.setPart(rs.getString("part"));
 				vo.setsDate(rs.getString("sDate"));
 				vo.setContent(rs.getString("content"));
+				
+				if(sw == 0) vo.setPartCnt(rs.getInt("partCnt"));
 				
 				vos.add(vo);
 			}
@@ -90,7 +91,7 @@ public class ScheduleDAO {
 		return res;
 	}
 
-	// 스케줄 일정 삭제처리
+	// 스케줄 삭제처리
 	public int setScheduleDeleteOk(int idx) {
 		int res = 0;
 		try {
@@ -106,11 +107,11 @@ public class ScheduleDAO {
 		return res;
 	}
 
-	// 스케줄 수정처리
+	// 스케줄 수정처리하기
 	public int setScheduleUpdateOk(ScheduleVO vo) {
 		int res = 0;
 		try {
-			sql = "update schedule set part=?, content=? where idx=?";
+			sql = "update schedule set part=?, content=? where idx = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getPart());
 			pstmt.setString(2, vo.getContent());

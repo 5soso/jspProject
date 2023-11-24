@@ -28,5 +28,24 @@ select * from schedule;
 
 ----------------------------------------------------------------------------------------------------------------
 select * from schedule where mid = 'hkd1234' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part;
+select * from schedule order by sDate, part;
+
+select * from schedule where mid = 'kms1234' and date_format(sDate, '%Y-%m-%d') = '2023-11-01' order by sDate, part; 
+select * from schedule where mid = 'kms1234' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part; 
+
+-- distinct : 그룹화
+select distinct sDate from schedule where mid = 'kms1234' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part; 
+select distinct sDate, count(*) as cnt from schedule where mid = 'kms1234' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part; 
+
+-- group by : 그룹화, where절 뒤에 사용하거나 where절이 없을 때 사용한다.
+select * from schedule where mid = 'kms1234' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part; 
+select * from schedule group by date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part; 
+select *, count(*) as cnt from schedule group by date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part; 
+
+-- 최종
+select *,count(*) as partCnt from schedule where mid='kms1234' and date_format(sDate, '%Y-%m') = '2023-11' group by sDate,part order by sDate, part; 
+
+select * from schedule where mid = 'kms1234' and date_format(sDate, '%Y-%m') = '2023-11' order by sDate, part; 
+
 
 
